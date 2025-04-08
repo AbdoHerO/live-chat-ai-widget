@@ -1,0 +1,131 @@
+<!-- chat-widget.component.html -->
+<div class="chat-widget" [class.expanded]="isExpanded">
+  <!-- Chat button (collapsed state) -->
+  <button 
+    *ngIf="!isExpanded" 
+    class="chat-button" 
+    (click)="toggleChat()">
+    <i class="chat-icon fas fa-comment"></i>
+  </button>
+
+  <!-- Chat container (expanded state) -->
+  <div *ngIf="isExpanded" class="chat-container">
+    <!-- Header -->
+    <div class="chat-header">
+      <!-- Back button when in conversation view -->
+      <button 
+        *ngIf="activeTab === 'chat' && showConversation" 
+        class="back-button"
+        (click)="showConversationList()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+
+      <!-- Title -->
+      <div class="header-title">
+        <span *ngIf="activeTab === 'home'">Home</span>
+        <span *ngIf="activeTab === 'chat' && !showConversation">Conversations</span>
+        <span *ngIf="activeTab === 'chat' && showConversation">
+          {{ getCurrentConversationTitle() }}
+        </span>
+        <span *ngIf="activeTab === 'help'">Help Center</span>
+      </div>
+
+      <!-- Tabs and close button -->
+      <div class="header-actions">
+        <div class="header-tabs">
+          <div 
+            class="tab" 
+            [class.active]="activeTab === 'home'"
+            (click)="setActiveTab('home')">
+            <i class="fas fa-home"></i>
+          </div>
+          <div 
+            class="tab" 
+            [class.active]="activeTab === 'chat'"
+            (click)="setActiveTab('chat')">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+          <div 
+            class="tab" 
+            [class.active]="activeTab === 'help'"
+            (click)="setActiveTab('help')">
+            <i class="fas fa-question-circle"></i>
+          </div>
+        </div>
+        <button class="close-button" (click)="toggleChat()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="chat-content">
+      <!-- Home tab -->
+      <div *ngIf="activeTab === 'home'" class="home-tab">
+        <app-chat-home 
+          (askQuestion)="handleAskQuestion($event)"
+          (selectArticle)="handleSelectArticle($event)"
+          (navigateToHelpTab)="setActiveTab('help')">
+        </app-chat-home>
+      </div>
+      
+      <!-- Chat tab -->
+      <div *ngIf="activeTab === 'chat'" class="chat-tab">
+        <!-- Conversation list -->
+        <div *ngIf="!showConversation" class="conversation-list-container">
+          <button class="new-chat-btn" (click)="startNewConversation()">
+            <i class="fas fa-plus new-icon"></i> New Conversation
+          </button>
+          
+          <div class="conversation-list">
+            <div 
+              *ngFor="let conv of conversations" 
+              class="conversation-item"
+              [class.active]="currentConversationId === conv.id"
+              (click)="loadAndShowConversation(conv.id!)">
+              <div class="conv-info">
+                <span class="conv-title">{{ conv.title }}</span>
+                <span class="conv-date">{{ formatDate(conv.lastUpdated) }}</span>
+              </div>
+              <button class="delete-btn" (click)="deleteConversation(conv.id!, $event)">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Conversation view -->
+        <div *ngIf="showConversation" class="conversation-view">
+          <app-chat-conversation 
+            [messages]="currentMessages" 
+            [loading]="isLoading"
+            (sendMessage)="sendMessage($event)">
+          </app-chat-conversation>
+        </div>
+      </div>
+
+      <!-- Help tab -->
+      <div *ngIf="activeTab === 'help'" class="help-tab">
+        <app-chat-help (selectHelp)="handleHelpSelection($event)"></app-chat-help>
+      </div>
+    </div>
+    
+    <!-- Footer navigation -->
+    <div class="chat-footer">
+      <div class="footer-nav">
+        <div class="nav-item" [class.active]="activeTab === 'home'" (click)="setActiveTab('home')">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </div>
+        <div class="nav-item" [class.active]="activeTab === 'chat'" (click)="setActiveTab('chat')">
+          <i class="fas fa-comment-dots"></i>
+          <span>Messages</span>
+        </div>
+        <div class="nav-item" [class.active]="activeTab === 'help'" (click)="setActiveTab('help')">
+          <i class="fas fa-question-circle"></i>
+          <span>Help</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

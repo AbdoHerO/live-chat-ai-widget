@@ -1,0 +1,36 @@
+<!-- chat-help.component.html -->
+<div class="help-container">
+  <div class="help-header">
+    <h2>How can I help you?</h2>
+    <p>Select a question below or ask your own in the chat.</p>
+  </div>
+  
+  <div class="help-sections">
+    <div class="help-section">
+      <h3>Getting Started</h3>
+      <div class="help-items">
+        <div class="help-item" (click)="selectQuestion('What can this assistant do?')">
+          <p>What can this assistant do?</p>
+        </div>
+        <div class="help-item" (click)="selectQuestion('How do I start a new conversation?')">
+          <p>How do I start a new conversation?</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="help-section">
+      <h3>Common Questions</h3>
+      <div class="help-items">
+        <div class="help-item" (click)="selectQuestion('How do I delete my conversation history?')">
+          <p>How do I delete my conversation history?</p>
+        </div>
+        <div class="help-item" (click)="selectQuestion('Can I export my chat conversations?')">
+          <p>Can I export my chat conversations?</p>
+        </div>
+        <div class="help-item" (click)="selectQuestion('Is my data private and secure?')">
+          <p>Is my data private and secure?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

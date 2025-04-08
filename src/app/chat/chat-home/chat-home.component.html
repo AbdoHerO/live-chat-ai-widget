@@ -1,0 +1,57 @@
+<!-- src/app/chat/components/chat-home.component.html -->
+<div class="home-container">
+    <!-- Welcome message -->
+    <div class="welcome-section">
+      <h2 class="greeting">Hello there.</h2>
+      <p class="subgreeting">How can we help?</p>
+    </div>
+    
+    <!-- Ask a question input -->
+    <div class="question-input" (click)="onAskQuestion()">
+      <span class="input-placeholder">Ask a question</span>
+      <div class="input-icon">
+        <i class="fas fa-keyboard"></i>
+      </div>
+    </div>
+    
+    <!-- Featured articles -->
+    <div class="articles-section">
+      <div *ngFor="let article of featuredArticles" class="article-card" (click)="onSelectArticle(article.id)">
+        <!-- Show image if available -->
+        <div *ngIf="article.image" class="article-image" [style.background-image]="'url(' + article.image + ')'">
+          <div *ngIf="article.subtitle" class="article-subtitle">{{ article.subtitle }}</div>
+          <div *ngIf="article.title && article.subtitle" class="article-title-overlay">{{ article.title }}</div>
+        </div>
+        
+        <!-- Title without image -->
+        <h3 *ngIf="!article.image && article.title" class="article-title">{{ article.title }}</h3>
+        
+        <!-- Description and content -->
+        <div class="article-content">
+          <h4 *ngIf="article.description" class="article-description">{{ article.description }}</h4>
+          <p class="article-text">{{ article.content }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Search for help -->
+    <div class="search-section">
+      <div class="search-input">
+        <span class="search-placeholder">Search for help</span>
+        <div class="search-icon">
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Suggested questions -->
+    <div class="suggested-questions">
+      <div *ngFor="let question of suggestedQuestions" class="question-item" (click)="onSelectQuestion(question.text)">
+        <span class="question-text">{{ question.text }}</span>
+        <div class="question-arrow">
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  
