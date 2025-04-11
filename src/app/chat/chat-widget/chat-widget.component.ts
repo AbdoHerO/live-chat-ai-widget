@@ -16,6 +16,7 @@ export class ChatWidgetComponent implements OnInit {
   currentConversationId: string | null = null;
   currentMessages: ChatMessage[] = [];
   isLoading = false;
+  threadId: string | null = null;
 
   constructor(
     private openaiService: OpenaiService,
@@ -133,58 +134,55 @@ export class ChatWidgetComponent implements OnInit {
   }
 
   async sendMessage(content: string) {
-    if (!content.trim() || !this.currentConversationId) return;
+  if (!content.trim() || !this.currentConversationId) return;
 
-    // Save user message
-    const userMessage: ChatMessage = {
-      conversationId: this.currentConversationId,
-      role: 'user',
-      content: content,
-      timestamp: new Date()
-    };
-    
-    await this.messageStorage.saveMessage(userMessage);
-    this.currentMessages = [...this.currentMessages, userMessage];
+  // Sauvegarder le message utilisateur (comme avant)
+  const userMessage: ChatMessage = {
+    conversationId: this.currentConversationId,
+    role: 'user',
+    content: content,
+    timestamp: new Date()
+  };
+  
+  await this.messageStorage.saveMessage(userMessage);
+  this.currentMessages = [...this.currentMessages, userMessage];
 
-    // Update conversation title if it's the first message
-    const messages = await this.messageStorage.getMessages(this.currentConversationId);
-    if (messages.length === 1) {
-      // Use the first few words of the first message as the title
-      const title = content.split(' ').slice(0, 4).join(' ') + '...';
-      await this.updateConversationTitle(this.currentConversationId, title);
-    }
-
-    // Prepare messages for API
-    const apiMessages = this.currentMessages.map(msg => ({
-      role: msg.role,
-      content: msg.content
-    }));
-
-    // Call OpenAI API
-    this.isLoading = true;
-    this.openaiService.sendMessage(apiMessages).subscribe({
-      next: async (response) => {
-        if (response && response.choices && response.choices[0]) {
-          const assistantMessage: ChatMessage = {
-            conversationId: this.currentConversationId!,
-            role: 'assistant',
-            content: response.choices[0].message.content,
-            timestamp: new Date()
-          };
-          
-          await this.messageStorage.saveMessage(assistantMessage);
-          this.currentMessages = [...this.currentMessages, assistantMessage];
-        } else {
-          console.error('Unexpected API response format:', response);
-          this.handleApiError('Unexpected response format from API');
-        }
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.handleApiError(error);
-      }
-    });
+  // Mise à jour du titre si nécessaire (comme avant)
+  const messages = await this.messageStorage.getMessages(this.currentConversationId);
+  if (messages.length === 1) {
+    const title = content.split(' ').slice(0, 4).join(' ') + '...';
+    await this.updateConversationTitle(this.currentConversationId, title);
   }
+
+  // Appel à l'API avec réutilisation du thread
+  this.isLoading = true;
+  this.openaiService.sendMessage(content, this.threadId || undefined).subscribe({
+    next: async (response) => {
+      if (response && response.message) {
+        // Stocker l'ID du thread pour la prochaine utilisation
+        this.threadId = response.threadId;
+        
+        const assistantMessage: ChatMessage = {
+          conversationId: this.currentConversationId!,
+          role: 'assistant',
+          content: response.message,
+          timestamp: new Date()
+        };
+        
+        await this.messageStorage.saveMessage(assistantMessage);
+        this.currentMessages = [...this.currentMessages, assistantMessage];
+      } else {
+        console.error('Unexpected API response format:', response);
+        this.handleApiError('Unexpected response format from API');
+      }
+      this.isLoading = false;
+    },
+    error: (error) => {
+      this.handleApiError(error);
+      this.threadId = null; // Réinitialiser en cas d'erreur
+    }
+  });
+}
 
   handleApiError(error: any) {
     console.error('Error getting response:', error);
