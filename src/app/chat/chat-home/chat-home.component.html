@@ -1,17 +1,22 @@
 <!-- src/app/chat/components/chat-home.component.html -->
 <div class="home-container">
     <!-- Welcome message -->
-    <div class="welcome-section">
-      <h2 class="greeting">Hello there.</h2>
-      <p class="subgreeting">How can we help?</p>
-    </div>
+    <!-- <div class="welcome-section">
+      <h2 class="greeting">Bonjour</h2>
+    <p class="subgreeting">Comment puis-je vous aider ?</p>
+    </div> -->
     
     <!-- Ask a question input -->
-    <div class="question-input" (click)="onAskQuestion()">
-      <span class="input-placeholder">Ask a question</span>
+    <!-- <div class="question-input" (click)="onAskQuestion()">
+      <span class="input-placeholder">Posez une question</span>
       <div class="input-icon">
         <i class="fas fa-keyboard"></i>
       </div>
+    </div> -->
+
+    <!-- bg image -->
+    <div class="bg-image" (click)="onAskQuestion()">
+      <img src="../../../../assets/images/chatbot-bg.svg" alt="background image">
     </div>
     
     <!-- Featured articles -->
@@ -37,7 +42,7 @@
     <!-- Search for help -->
     <div class="search-section">
       <div class="search-input">
-        <span class="search-placeholder">Search for help</span>
+        <span class="search-placeholder">Rechercher de l'aide</span>
         <div class="search-icon">
           <i class="fas fa-search"></i>
         </div>

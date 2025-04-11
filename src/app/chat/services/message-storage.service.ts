@@ -45,7 +45,7 @@ export class MessageStorageService {
     localStorage.setItem('messages', JSON.stringify(this.messages));
   }
 
-  async createConversation(title: string = 'New Conversation'): Promise<string> {
+  async createConversation(title: string = 'Nouvelle Conversation'): Promise<string> {
     const id = Date.now().toString();
     this.conversations.push({
       id,

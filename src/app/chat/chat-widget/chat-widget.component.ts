@@ -28,7 +28,7 @@ export class ChatWidgetComponent implements OnInit {
     
     if (this.conversations.length === 0) {
       // Create a default conversation if none exists
-      const id = await this.messageStorage.createConversation('New Conversation');
+      const id = await this.messageStorage.createConversation('Nouvelle Conversation');
       this.conversations = await this.messageStorage.getConversations();
       this.currentConversationId = id;
     } else {

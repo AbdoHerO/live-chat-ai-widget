@@ -1,36 +1,42 @@
-<!-- chat-help.component.html -->
 <div class="help-container">
   <div class="help-header">
-    <h2>How can I help you?</h2>
-    <p>Select a question below or ask your own in the chat.</p>
+    <h2>Comment puis-je vous aider ?</h2>
+    <p>Sélectionnez une question ci-dessous ou posez la vôtre dans le chat.</p>
   </div>
   
   <div class="help-sections">
+
+    <!-- Section : Pour commencer -->
     <div class="help-section">
-      <h3>Getting Started</h3>
+      <h3>Pour commencer</h3>
       <div class="help-items">
-        <div class="help-item" (click)="selectQuestion('What can this assistant do?')">
-          <p>What can this assistant do?</p>
+        <div class="help-item" (click)="selectQuestion('Que peut faire cet assistant ?')">
+          <p>Que peut faire cet assistant ?</p>
         </div>
-        <div class="help-item" (click)="selectQuestion('How do I start a new conversation?')">
-          <p>How do I start a new conversation?</p>
+        <div class="help-item" (click)="selectQuestion('Comment démarrer une nouvelle conversation ?')">
+          <p>Comment démarrer une nouvelle conversation ?</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section : Questions fréquentes -->
+    <div class="help-section">
+      <h3>Questions fréquentes</h3>
+      <div class="help-items">
+        <div class="help-item" (click)="selectQuestion('Quels sont les produits les plus vendus ce mois-ci ?')">
+          <p>Quels sont les produits les plus vendus ce mois-ci?</p>
+        </div>
+        <div class="help-item" (click)="selectQuestion('Quels produits sont actuellement en rupture de stock ?')">
+          <p>Quels produits sont actuellement en rupture de stock ?</p>
+        </div>
+        <div class="help-item" (click)="selectQuestion('Quels produits ont été achetés en grande quantité récemment ?')">
+          <p>Quels produits ont été achetés en grande quantité récemment ?</p>
+        </div>
+        <div class="help-item" (click)="selectQuestion('Mes données sont-elles privées et sécurisées ?')">
+          <p>Mes données sont-elles privées et sécurisées ?</p>
         </div>
       </div>
     </div>
     
-    <div class="help-section">
-      <h3>Common Questions</h3>
-      <div class="help-items">
-        <div class="help-item" (click)="selectQuestion('How do I delete my conversation history?')">
-          <p>How do I delete my conversation history?</p>
-        </div>
-        <div class="help-item" (click)="selectQuestion('Can I export my chat conversations?')">
-          <p>Can I export my chat conversations?</p>
-        </div>
-        <div class="help-item" (click)="selectQuestion('Is my data private and secure?')">
-          <p>Is my data private and secure?</p>
-        </div>
-      </div>
-    </div>
   </div>
 </div>

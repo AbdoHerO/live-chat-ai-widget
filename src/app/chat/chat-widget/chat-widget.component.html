@@ -5,7 +5,8 @@
     *ngIf="!isExpanded" 
     class="chat-button" 
     (click)="toggleChat()">
-    <i class="chat-icon fas fa-comment"></i>
+    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="512" height="512" viewBox="0 0 32 32"><path fill="#276578" d="m13.294 7.436.803 2.23a8.84 8.84 0 0 0 5.316 5.316l2.23.803a.229.229 0 0 1 0 .43l-2.23.803a8.84 8.84 0 0 0-5.316 5.316l-.803 2.23a.229.229 0 0 1-.43 0l-.803-2.23a8.84 8.84 0 0 0-5.316-5.316l-2.23-.803a.229.229 0 0 1 0-.43l2.23-.803a8.84 8.84 0 0 0 5.316-5.316l.803-2.23a.228.228 0 0 1 .43 0m10.038-5.359.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129a.116.116 0 0 1 .218 0m0 19.173.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129c.037-.102.182-.102.218 0" data-original="#000000"/></svg>
+    <span class="chat-button-text">Assistant IA</span>
   </button>
 
   <!-- Chat container (expanded state) -->
@@ -22,12 +23,12 @@
 
       <!-- Title -->
       <div class="header-title">
-        <span *ngIf="activeTab === 'home'">Home</span>
+        <span *ngIf="activeTab === 'home'">Accueil</span>
         <span *ngIf="activeTab === 'chat' && !showConversation">Conversations</span>
         <span *ngIf="activeTab === 'chat' && showConversation">
           {{ getCurrentConversationTitle() }}
         </span>
-        <span *ngIf="activeTab === 'help'">Help Center</span>
+        <span *ngIf="activeTab === 'help'">Centre d'aide</span>
       </div>
 
       <!-- Tabs and close button -->
@@ -74,7 +75,7 @@
         <!-- Conversation list -->
         <div *ngIf="!showConversation" class="conversation-list-container">
           <button class="new-chat-btn" (click)="startNewConversation()">
-            <i class="fas fa-plus new-icon"></i> New Conversation
+            <i class="fas fa-plus new-icon"></i> Nouvelle Conversation
           </button>
           
           <div class="conversation-list">
@@ -115,7 +116,7 @@
       <div class="footer-nav">
         <div class="nav-item" [class.active]="activeTab === 'home'" (click)="setActiveTab('home')">
           <i class="fas fa-home"></i>
-          <span>Home</span>
+          <span>Accueil</span>
         </div>
         <div class="nav-item" [class.active]="activeTab === 'chat'" (click)="setActiveTab('chat')">
           <i class="fas fa-comment-dots"></i>
@@ -123,7 +124,7 @@
         </div>
         <div class="nav-item" [class.active]="activeTab === 'help'" (click)="setActiveTab('help')">
           <i class="fas fa-question-circle"></i>
-          <span>Help</span>
+          <span>Aide</span>
         </div>
       </div>
     </div>

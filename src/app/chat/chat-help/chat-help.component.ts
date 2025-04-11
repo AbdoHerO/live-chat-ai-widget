@@ -16,27 +16,27 @@ export class ChatHelpComponent {
   
   helpCategories: HelpCategory[] = [
     {
-      name: 'Getting Started',
+      name: 'Statistiques de Ventes',
       questions: [
-        'How do I create a new website?',
-        'What hosting plan should I choose?',
-        'How do I connect my domain?'
+        'Quels sont les produits les plus vendus ce mois-ci ?',
+        'Quelle est l’évolution des ventes cette année ?',
+        'Quels mois enregistrent les ventes les plus fortes ?'
       ]
     },
     {
-      name: 'Account Management',
+      name: 'Suivi des Achats',
       questions: [
-        'How do I change my password?',
-        'How do I update billing information?',
-        'How to cancel my subscription?'
+        'Quels produits ont été achetés en grande quantité cette année ?',
+        'Quels fournisseurs ont été les plus sollicités ?',
+        'Quelle est la tendance des achats par trimestre ?'
       ]
     },
     {
-      name: 'Technical Support',
+      name: 'État des Stocks',
       questions: [
-        'My website is down, what should I do?',
-        'How do I set up SSL?',
-        'How to configure email accounts?'
+        'Quels sont les produits en rupture de stock ?',
+        'Quels produits ont un niveau de stock critique ?',
+        'Quels articles doivent être réapprovisionnés en priorité ?'
       ]
     }
   ];
