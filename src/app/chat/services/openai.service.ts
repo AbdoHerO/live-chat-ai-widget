@@ -16,7 +16,7 @@ export class OpenaiService {
   constructor(private http: HttpClient) {}
 
   sendMessage(content: string, threadId?: string): Observable<any> {
-    const apiKey = environment.openaiApiKey; 
+    const apiKey = environment.openaiApiKey;
     if (!apiKey) {
       return throwError(() => new Error('API key not configured'));
     }

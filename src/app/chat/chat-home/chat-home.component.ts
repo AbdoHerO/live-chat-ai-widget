@@ -18,7 +18,7 @@ export class ChatHomeComponent implements OnInit {
       subtitle: 'Innovation',
       description: 'Le 19/12/2024',
       content: 'Après avoir lancé, en 2015, le SSB 400, premier générique pour traiter l\'hépatite C, Pharma 5 s\'attaque à l\'épilepsie ...',
-      image: 'https://cdn.officielpharma.ma/de4b0f80-4bd1-462f-8cea-9db2f798759e_cannabis.jpg',
+      image: 'https://cdn.sophatel.com/de4b0f80-4bd1-462f-8cea-9db2f798759e_cannabis.jpg',
       url: 'https://www.officielpharma.ma/actuList'
     },
     {
@@ -27,7 +27,7 @@ export class ChatHomeComponent implements OnInit {
       subtitle: 'Événement',
       description: 'Le 05/06/2024',
       content: '14ème Edition du Salon Officine Plus 2024 qui se déroulera les 29 Juin 2024 à l\'hôtel BARCEL Casablanca ...',
-      image: 'https://cdn.officielpharma.ma/3e7dce79-6a95-47f0-8112-e878fd2ec8ee_Officine%20plus%202024.PNG',
+      image: 'https://cdn.sophatel.com/3e7dce79-6a95-47f0-8112-e878fd2ec8ee_Officine%20plus%202024.PNG',
       url: 'https://www.officielpharma.ma/actuList'
     },
     {
@@ -36,7 +36,7 @@ export class ChatHomeComponent implements OnInit {
       subtitle: 'Alerte sanitaire',
       description: 'Le 28/03/2023',
       content: 'Conformément aux recommandations de la Commission Nationale de Pharmacovigilance, il a été décidé la suspension des Autorisations ...',
-      image: 'https://cdn.officielpharma.ma/fe98abab-bb9f-44f1-8a59-72faa96349da_LOGO%20minist%C3%83%C2%A8re%20de%20la%20sant%C3%83%C2%A9.png',
+      image: 'https://cdn.sophatel.com/fe98abab-bb9f-44f1-8a59-72faa96349da_LOGO%20minist%C3%83%C2%A8re%20de%20la%20sant%C3%83%C2%A9.png',
       url: 'https://www.officielpharma.ma/actuList'
     }
   ];
