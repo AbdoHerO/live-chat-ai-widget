@@ -1,12 +1,13 @@
 // chat-widget.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { OpenaiService } from '../services/openai.service';
 import { MessageStorageService, ChatMessage, Conversation } from '../services/message-storage.service';
 
 @Component({
   selector: 'app-chat-widget',
   templateUrl: './chat-widget.component.html',
-  styleUrls: ['./chat-widget.component.scss']
+  styleUrls: ['./chat-widget.component.scss'],
+  // encapsulation: ViewEncapsulation.ShadowDom
 })
 export class ChatWidgetComponent implements OnInit {
   isExpanded = false;

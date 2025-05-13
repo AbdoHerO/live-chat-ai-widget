@@ -1,5 +1,4 @@
-<!-- chat-conversation.component.html -->
-<div class="conversation-container">
+<div class="conversation-container app-chat-conversation-root">
   <div class="messages-container">
     <div *ngIf="messages.length === 0" class="empty-state">
       <div class="welcome-message">
@@ -43,7 +42,7 @@
       class="send-button" 
       [disabled]="loading"
       (click)="sendMessageManually(messageInput)">
-      <i class="send-icon">➤</i>
+      <i class="mdi mdi-send"></i>
     </button>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <!-- chat-widget.component.html -->
-<div class="chat-widget" [class.expanded]="isExpanded">
+<div class="chat-widget app-chat-widget-root" [class.expanded]="isExpanded">
   <!-- Chat button (collapsed state) -->
   <button 
     *ngIf="!isExpanded" 
@@ -18,7 +18,7 @@
         *ngIf="activeTab === 'chat' && showConversation" 
         class="back-button"
         (click)="showConversationList()">
-        <i class="fas fa-arrow-left"></i>
+        <i class="mdi mdi-arrow-left"></i>
       </button>
 
       <!-- Title -->
@@ -38,23 +38,23 @@
             class="tab" 
             [class.active]="activeTab === 'home'"
             (click)="setActiveTab('home')">
-            <i class="fas fa-home"></i>
+            <i class="mdi mdi-home"></i>
           </div>
           <div 
             class="tab" 
             [class.active]="activeTab === 'chat'"
             (click)="setActiveTab('chat')">
-            <i class="fas fa-comment-dots"></i>
+            <i class="mdi mdi-message-text"></i>
           </div>
           <div 
             class="tab" 
             [class.active]="activeTab === 'help'"
             (click)="setActiveTab('help')">
-            <i class="fas fa-question-circle"></i>
+            <i class="mdi mdi-information"></i>
           </div>
         </div>
         <button class="close-button" (click)="toggleChat()">
-          <i class="fas fa-times"></i>
+          <i class="mdi mdi-close"></i>
         </button>
       </div>
     </div>
@@ -75,7 +75,7 @@
         <!-- Conversation list -->
         <div *ngIf="!showConversation" class="conversation-list-container">
           <button class="new-chat-btn" (click)="startNewConversation()">
-            <i class="fas fa-plus new-icon"></i> Nouvelle Conversation
+            <i class="mdi mdi-plus new-icon"></i> Nouvelle Conversation
           </button>
           
           <div class="conversation-list">
@@ -89,7 +89,7 @@
                 <span class="conv-date">{{ formatDate(conv.lastUpdated) }}</span>
               </div>
               <button class="delete-btn" (click)="deleteConversation(conv.id!, $event)">
-                <i class="fas fa-trash"></i>
+                <i class="mdi mdi-trash"></i>
               </button>
             </div>
           </div>
@@ -115,15 +115,15 @@
     <div class="chat-footer">
       <div class="footer-nav">
         <div class="nav-item" [class.active]="activeTab === 'home'" (click)="setActiveTab('home')">
-          <i class="fas fa-home"></i>
+          <i class="mdi mdi-home"></i>
           <span>Accueil</span>
         </div>
         <div class="nav-item" [class.active]="activeTab === 'chat'" (click)="setActiveTab('chat')">
-          <i class="fas fa-comment-dots"></i>
+          <i class="mdi mdi-message-text"></i>
           <span>Messages</span>
         </div>
         <div class="nav-item" [class.active]="activeTab === 'help'" (click)="setActiveTab('help')">
-          <i class="fas fa-question-circle"></i>
+          <i class="mdi mdi-information"></i>
           <span>Aide</span>
         </div>
       </div>

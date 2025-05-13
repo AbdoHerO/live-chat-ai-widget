@@ -1,10 +1,11 @@
 // src/app/chat/components/chat-home.component.ts
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-chat-home',
   templateUrl: './chat-home.component.html',
-  styleUrls: ['./chat-home.component.scss']
+  styleUrls: ['./chat-home.component.scss'],
+  // encapsulation: ViewEncapsulation.ShadowDom
 })
 export class ChatHomeComponent implements OnInit {
   @Output() askQuestion = new EventEmitter<string>();
@@ -23,11 +24,11 @@ export class ChatHomeComponent implements OnInit {
     },
     {
       id: 'article2',
-      title: 'OFFICINE PLUS 2024',
+      title: 'OFFICINE PLUS 2022',
       subtitle: 'Événement',
-      description: 'Le 05/06/2024',
-      content: '14ème Edition du Salon Officine Plus 2024 qui se déroulera les 29 Juin 2024 à l\'hôtel BARCEL Casablanca ...',
-      image: 'https://cdn.sophatel.com/3e7dce79-6a95-47f0-8112-e878fd2ec8ee_Officine%20plus%202024.PNG',
+      description: 'Le 01/09/2022',
+      content: 'Découvrez les 4 belles raisons pour une inscription en ligne ...',
+      image: 'https://cdn.sophatel.com/ca6e9c2a-a209-4bd2-bb34-8fad0b2af21e_OFFICINE%20PLUS%202022%20(2).jpg',
       url: 'https://www.officielpharma.ma/actuList'
     },
     {

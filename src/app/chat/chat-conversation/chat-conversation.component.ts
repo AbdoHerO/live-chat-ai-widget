@@ -1,11 +1,12 @@
 // chat-conversation.component.ts
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { ChatMessage } from '../services/message-storage.service';
 
 @Component({
   selector: 'app-chat-conversation',
   templateUrl: './chat-conversation.component.html',
-  styleUrls: ['./chat-conversation.component.scss']
+  styleUrls: ['./chat-conversation.component.scss'],
+  // encapsulation: ViewEncapsulation.ShadowDom
 })
 export class ChatConversationComponent implements OnChanges {
   @Input() messages: ChatMessage[] = [];

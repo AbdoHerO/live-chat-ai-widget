@@ -1,5 +1,5 @@
 // chat-help.component.ts
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 
 interface HelpCategory {
   name: string;
@@ -9,7 +9,8 @@ interface HelpCategory {
 @Component({
   selector: 'app-chat-help',
   templateUrl: './chat-help.component.html',
-  styleUrls: ['./chat-help.component.scss']
+  styleUrls: ['./chat-help.component.scss'],
+  // encapsulation: ViewEncapsulation.ShadowDom
 })
 export class ChatHelpComponent {
   @Output() selectHelp = new EventEmitter<string>();

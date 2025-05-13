@@ -1,5 +1,5 @@
 <!-- src/app/chat/components/chat-home.component.html -->
-<div class="home-container">
+<div class="home-container app-chat-home-root">
     <!-- Welcome message -->
     <!-- <div class="welcome-section">
       <h2 class="greeting">Bonjour</h2>
@@ -10,7 +10,7 @@
     <!-- <div class="question-input" (click)="onAskQuestion()">
       <span class="input-placeholder">Posez une question</span>
       <div class="input-icon">
-        <i class="fas fa-keyboard"></i>
+        <i class="mdi mdi-keyboard"></i>
       </div>
     </div> -->
 
@@ -44,7 +44,7 @@
       <div class="search-input">
         <span class="search-placeholder">Rechercher de l'aide</span>
         <div class="search-icon">
-          <i class="fas fa-search"></i>
+          <i class="mdi mdi-magnify"></i>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
       <div *ngFor="let question of suggestedQuestions" class="question-item" (click)="onSelectQuestion(question.text)">
         <span class="question-text">{{ question.text }}</span>
         <div class="question-arrow">
-          <i class="fas fa-chevron-right"></i>
+          <i class="mdi mdi-chevron-right"></i>
         </div>
       </div>
     </div>
