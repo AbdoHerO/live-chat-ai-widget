@@ -1,0 +1,116 @@
+<!-- mcp-chat-widget.component.html -->
+<div class="chat-widget app-mcp-chat-widget-root" [class.expanded]="isExpanded">
+  <!-- Chat button (collapsed state) -->
+  <button
+    *ngIf="!isExpanded"
+    class="chat-button"
+    (click)="toggleChat()">
+    <i class="mdi mdi-message-text chat-icon"></i>
+  </button>
+
+  <!-- Chat window (expanded state) -->
+  <div *ngIf="isExpanded" class="chat-window">
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="header-left">
+        <div class="logo">
+          <i class="mdi mdi-robot"></i>
+        </div>
+        <div class="title">
+          <h3>MCP Assistant</h3>
+          <span class="subtitle">Propulsé par MCP Server</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="minimize-btn" (click)="toggleChat()">
+          <i class="mdi mdi-window-minimize"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="chat-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'home'"
+        (click)="setActiveTab('home')">
+        <i class="mdi mdi-home"></i>
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'chat'"
+        (click)="setActiveTab('chat')">
+        <i class="mdi mdi-message-text-outline"></i>
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'help'"
+        (click)="setActiveTab('help')">
+        <i class="mdi mdi-help-circle-outline"></i>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="chat-content">
+      <!-- Login tab -->
+      <div *ngIf="activeTab === 'login'" class="login-tab">
+        <app-mcp-chat-login (loginSuccess)="handleLoginSuccess()"></app-mcp-chat-login>
+      </div>
+
+      <!-- Home tab -->
+      <div *ngIf="activeTab === 'home'" class="home-tab">
+        <app-mcp-chat-home
+          (askQuestion)="handleAskQuestion($event)"
+          (selectArticle)="handleSelectArticle($event)"
+          (navigateToHelpTab)="setActiveTab('help')">
+        </app-mcp-chat-home>
+      </div>
+
+      <!-- Chat tab -->
+      <div *ngIf="activeTab === 'chat'" class="chat-tab">
+        <!-- Conversation list -->
+        <div *ngIf="!showConversation" class="conversation-list-container">
+          <button class="new-chat-btn" (click)="startNewConversation()">
+            <i class="mdi mdi-plus new-icon"></i> Nouvelle Conversation
+          </button>
+
+          <div class="conversation-list">
+            <div
+              *ngFor="let conv of conversations"
+              class="conversation-item"
+              [class.active]="currentConversationId === conv.id"
+              (click)="loadAndShowConversation(conv.id!)">
+              <div class="conv-info">
+                <span class="conv-title">{{ conv.title }}</span>
+                <span class="conv-date">{{ formatDate(conv.lastUpdated) }}</span>
+              </div>
+              <button class="delete-btn" (click)="deleteConversation(conv.id!, $event)">
+                <i class="mdi mdi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conversation view -->
+        <div *ngIf="showConversation" class="conversation-view">
+          <app-mcp-chat-conversation
+            [messages]="currentMessages"
+            [loading]="isLoading"
+            (sendMessage)="sendMessage($event)">
+          </app-mcp-chat-conversation>
+        </div>
+      </div>
+
+      <!-- Help tab -->
+      <div *ngIf="activeTab === 'help'" class="help-tab">
+        <app-mcp-chat-help></app-mcp-chat-help>
+      </div>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+      <button class="close-error" (click)="error = null">×</button>
+    </div>
+  </div>
+</div>

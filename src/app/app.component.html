@@ -1,4 +1,25 @@
-Hello World!
+<div class="app-container">
+  <div class="header">
+    <h1>AI Chat Demo</h1>
+    <div class="mode-selector">
+      <span>Mode: </span>
+      <select (change)="toggleChatMode($event)">
+        <option [selected]="useMcpServer" value="mcp">MCP Server</option>
+        <option [selected]="!useMcpServer" value="openai">Direct OpenAI</option>
+      </select>
+    </div>
+  </div>
 
+  <div class="content">
+    <p>This demo showcases two different implementations of an AI chat widget:</p>
+    <ul>
+      <li><strong>MCP Server:</strong> Uses the MCP (Microservice Control Plane) server to handle chat requests, which connects to a database for user information.</li>
+      <li><strong>Direct OpenAI:</strong> Connects directly to the OpenAI API without using the MCP server.</li>
+    </ul>
+    <p>Current mode: <strong>{{ useMcpServer ? 'MCP Server' : 'Direct OpenAI' }}</strong></p>
+  </div>
 
-<app-chat-widget></app-chat-widget>
+  <!-- Conditionally render either the OpenAI or MCP chat widget -->
+  <app-chat-widget *ngIf="!useMcpServer"></app-chat-widget>
+  <app-mcp-chat-widget *ngIf="useMcpServer"></app-mcp-chat-widget>
+</div>

@@ -1,0 +1,55 @@
+<!-- mcp-chat-home.component.html -->
+<div class="home-container app-mcp-chat-home-root">
+  <!-- bg image -->
+  <div class="bg-image" (click)="onAskQuestion()">
+    <img src="../../../../assets/images/chatbot-bg.svg" alt="background image">
+  </div>
+  
+  <!-- Welcome message -->
+  <div class="welcome-section">
+    <h2 class="greeting">Bienvenue sur MCP Assistant</h2>
+    <p class="subgreeting">Comment puis-je vous aider aujourd'hui ?</p>
+  </div>
+  
+  <!-- Ask a question input -->
+  <div class="question-input" (click)="onAskQuestion()">
+    <span class="input-placeholder">Posez une question</span>
+    <div class="input-icon">
+      <i class="mdi mdi-keyboard"></i>
+    </div>
+  </div>
+  
+  <!-- Suggested questions -->
+  <div class="suggested-questions">
+    <h3>Questions suggérées</h3>
+    <div class="question-list">
+      <div 
+        *ngFor="let question of suggestedQuestions" 
+        class="question-item"
+        (click)="onSelectQuestion(question)">
+        <i class="mdi mdi-help-circle-outline"></i>
+        <span>{{ question }}</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Popular articles -->
+  <div class="popular-articles">
+    <h3>Articles populaires</h3>
+    <div class="article-list">
+      <div 
+        *ngFor="let article of popularArticles" 
+        class="article-item"
+        (click)="onSelectArticle(article.id)">
+        <i class="mdi mdi-{{ article.icon }}"></i>
+        <span>{{ article.title }}</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Help link -->
+  <div class="help-link" (click)="onNavigateToHelp()">
+    <i class="mdi mdi-help-circle"></i>
+    <span>Besoin d'aide ?</span>
+  </div>
+</div>

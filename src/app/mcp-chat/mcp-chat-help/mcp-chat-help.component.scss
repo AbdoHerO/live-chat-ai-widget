@@ -1,0 +1,114 @@
+// mcp-chat-help.component.scss
+.help-container {
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.help-header {
+  text-align: center;
+  margin-bottom: 20px;
+  
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+.help-content {
+  flex: 1;
+  
+  .help-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0078d4;
+      margin-bottom: 10px;
+    }
+    
+    p {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+  }
+}
+
+.help-footer {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  
+  .mcp-info {
+    display: flex;
+    align-items: center;
+    
+    .mcp-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #0078d4;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      
+      i {
+        font-size: 24px;
+      }
+    }
+    
+    .mcp-details {
+      h4 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 5px 0;
+      }
+      
+      p {
+        font-size: 12px;
+        color: #666;
+        margin: 0;
+      }
+    }
+  }
+  
+  .contact-info {
+    text-align: center;
+    
+    p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    a {
+      color: #0078d4;
+      text-decoration: none;
+      font-weight: 500;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

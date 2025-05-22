@@ -1,0 +1,50 @@
+<div class="conversation-container app-mcp-chat-conversation-root">
+  <div class="messages-container">
+    <div *ngIf="messages.length === 0" class="empty-state">
+      <div class="welcome-message">
+        <h3>Bonjour 👋</h3>
+        <p>Comment puis-je vous aider aujourd'hui ?</p>
+        <p class="mcp-note">Propulsé par MCP Server</p>
+      </div>
+    </div>
+    
+    <div *ngFor="let message of messages" class="message" [ngClass]="message.role">
+      <div class="avatar" [ngClass]="message.role">
+        <span *ngIf="message.role === 'user'">👤</span>
+        <span *ngIf="message.role === 'assistant'">🤖</span>
+        <span *ngIf="message.role === 'system'">⚙️</span>
+      </div>
+      <div class="content">
+        <p [innerHTML]="formatMessage(message.content)"></p>
+      </div>
+    </div>
+    
+    <div *ngIf="loading" class="message assistant">
+      <div class="avatar assistant">🤖</div>
+      <div class="content">
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="input-container">
+    <textarea 
+      #messageInput
+      class="message-input" 
+      placeholder="Tapez votre message..."
+      (keydown)="onEnterPress($event, messageInput)"
+      (input)="adjustTextareaHeight(messageInput)"
+      [disabled]="loading"
+    ></textarea>
+    <button 
+      class="send-button" 
+      [disabled]="loading"
+      (click)="sendMessageManually(messageInput)">
+      <i class="mdi mdi-send"></i>
+    </button>
+  </div>
+</div>

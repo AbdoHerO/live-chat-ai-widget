@@ -1,0 +1,163 @@
+// mcp-chat-login.component.scss
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 20px;
+  
+  .logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #0078d4;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    
+    i {
+      font-size: 36px;
+    }
+  }
+  
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px 0;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+}
+
+.login-form {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+  
+  .form-group {
+    margin-bottom: 15px;
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      
+      &:focus {
+        outline: none;
+        border-color: #0078d4;
+      }
+      
+      &:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: #106ebe;
+    }
+    
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .loading-spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+    }
+  }
+  
+  .error-message {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffebee;
+    color: #d32f2f;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+.quick-login {
+  text-align: center;
+  
+  p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .quick-login-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 10px;
+    
+    button {
+      padding: 8px 12px;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+  }
+  
+  .note {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

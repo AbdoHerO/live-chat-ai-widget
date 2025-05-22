@@ -1,0 +1,54 @@
+<!-- mcp-chat-login.component.html -->
+<div class="login-container app-mcp-chat-login-root">
+  <div class="login-header">
+    <div class="logo">
+      <i class="mdi mdi-robot"></i>
+    </div>
+    <h2>MCP Assistant</h2>
+    <p>Connectez-vous pour accéder à vos informations personnelles</p>
+  </div>
+  
+  <div class="login-form">
+    <div class="form-group">
+      <label for="username">Nom d'utilisateur</label>
+      <input 
+        type="text" 
+        id="username" 
+        [(ngModel)]="username" 
+        placeholder="Entrez votre nom d'utilisateur"
+        [disabled]="isLoading">
+    </div>
+    
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input 
+        type="password" 
+        id="password" 
+        [(ngModel)]="password" 
+        placeholder="Entrez votre mot de passe"
+        [disabled]="isLoading">
+    </div>
+    
+    <button 
+      class="login-button" 
+      (click)="login()" 
+      [disabled]="isLoading">
+      <span *ngIf="!isLoading">Se connecter</span>
+      <span *ngIf="isLoading" class="loading-spinner"></span>
+    </button>
+    
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+  </div>
+  
+  <div class="quick-login">
+    <p>Connexion rapide pour la démo :</p>
+    <div class="quick-login-buttons">
+      <button (click)="quickLogin('user1')">user1</button>
+      <button (click)="quickLogin('user2')">user2</button>
+      <button (click)="quickLogin('admin')">admin</button>
+    </div>
+    <p class="note">Mot de passe par défaut : "password"</p>
+  </div>
+</div>
