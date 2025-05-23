@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface McpChatRequest {
@@ -16,7 +16,7 @@ export interface McpChatResponse {
   conversationId: string;
   role: string;
   content: string;
-  timestamp: Date;
+  timestamp: string;
 }
 
 export interface McpConversationRequest {
@@ -113,122 +113,62 @@ export class McpService {
 
   // Send a message to the MCP server
   sendMessage(content: string, conversationId: string): Observable<McpChatResponse> {
-    // Check if authenticated
-    if (!this.authToken) {
-      // Try to authenticate with default credentials first
-      return this.authenticate(this.username, 'password').pipe(
-        switchMap(() => this.sendMessageWithAuth(content, conversationId)),
-        catchError(err => {
-          console.error('Authentication failed:', err);
-          return throwError(() => new Error('Veuillez vous authentifier avant d\'envoyer un message'));
-        })
-      );
-    }
-
-    return this.sendMessageWithAuth(content, conversationId);
-  }
-
-  // Helper method to send message after authentication
-  private sendMessageWithAuth(content: string, conversationId: string): Observable<McpChatResponse> {
+    // For now, we'll skip authentication since the MCP server doesn't require it
     const chatRequest: McpChatRequest = {
       conversationId,
       content,
       username: this.username
     };
 
+    console.log('Sending request to MCP server:', `${this.baseUrl}/api/chat`, chatRequest);
+
     return this.http.post<McpChatResponse>(
-      `${this.baseUrl}/chat/message`,
-      chatRequest,
-      { headers: this.getHeaders() }
+      `${this.baseUrl}/api/chat`,
+      chatRequest
     ).pipe(
+      tap(response => console.log('MCP server response:', response)),
       catchError(err => {
-        // If unauthorized, try to re-authenticate
-        if (err.status === 401) {
-          return this.authenticate(this.username, 'password').pipe(
-            switchMap(() => this.sendMessageWithAuth(content, conversationId))
-          );
-        }
         console.error('MCP Chat error:', err);
-        return throwError(() => new Error(err.message || 'Erreur lors de l\'envoi du message'));
+        return throwError(() => new Error('Erreur lors de la communication avec le serveur MCP. Veuillez réessayer.'));
       })
     );
   }
 
   // Create a new conversation
   createConversation(title: string = 'Nouvelle Conversation'): Observable<McpConversationResponse> {
-    // Check if authenticated
-    if (!this.authToken) {
-      // Try to authenticate with default credentials first
-      return this.authenticate(this.username, 'password').pipe(
-        switchMap(() => this.createConversationWithAuth(title)),
-        catchError(err => {
-          console.error('Authentication failed:', err);
-          return throwError(() => new Error('Veuillez vous authentifier avant de créer une conversation'));
-        })
-      );
-    }
+    // Since the MCP server doesn't have a dedicated endpoint for creating conversations,
+    // we'll simulate it by sending a message to a new conversation ID
+    const conversationId = this.generateUniqueId();
 
-    return this.createConversationWithAuth(title);
-  }
-
-  // Helper method to create conversation after authentication
-  private createConversationWithAuth(title: string): Observable<McpConversationResponse> {
-    const conversationRequest: McpConversationRequest = {
+    // Create a mock conversation response
+    const mockResponse: McpConversationResponse = {
+      id: conversationId,
+      title: title,
       username: this.username,
-      title
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
-    return this.http.post<McpConversationResponse>(
-      `${this.baseUrl}/conversations`,
-      conversationRequest,
-      { headers: this.getHeaders() }
-    ).pipe(
-      catchError(err => {
-        // If unauthorized, try to re-authenticate
-        if (err.status === 401) {
-          return this.authenticate(this.username, 'password').pipe(
-            switchMap(() => this.createConversationWithAuth(title))
-          );
-        }
-        console.error('MCP Create Conversation error:', err);
-        return throwError(() => new Error(err.message || 'Erreur lors de la création de la conversation'));
-      })
-    );
+    // Return the mock response as an Observable
+    return new Observable<McpConversationResponse>(observer => {
+      observer.next(mockResponse);
+      observer.complete();
+    });
+  }
+
+  // Generate a unique ID for new conversations
+  private generateUniqueId(): string {
+    return 'conv-' + Math.random().toString(36).substring(2, 11) +
+           '-' + Date.now().toString(36);
   }
 
   // Get all conversations for the current user
   getUserConversations(): Observable<McpConversationResponse[]> {
-    // Check if authenticated
-    if (!this.authToken) {
-      // Try to authenticate with default credentials first
-      return this.authenticate(this.username, 'password').pipe(
-        switchMap(() => this.getUserConversationsWithAuth()),
-        catchError(err => {
-          console.error('Authentication failed:', err);
-          return throwError(() => new Error('Veuillez vous authentifier avant de récupérer les conversations'));
-        })
-      );
-    }
-
-    return this.getUserConversationsWithAuth();
-  }
-
-  // Helper method to get conversations after authentication
-  private getUserConversationsWithAuth(): Observable<McpConversationResponse[]> {
-    return this.http.get<McpConversationResponse[]>(
-      `${this.baseUrl}/conversations/user/${this.username}`,
-      { headers: this.getHeaders() }
-    ).pipe(
-      catchError(err => {
-        // If unauthorized, try to re-authenticate
-        if (err.status === 401) {
-          return this.authenticate(this.username, 'password').pipe(
-            switchMap(() => this.getUserConversationsWithAuth())
-          );
-        }
-        console.error('MCP Get Conversations error:', err);
-        return throwError(() => new Error(err.message || 'Erreur lors de la récupération des conversations'));
-      })
-    );
+    // Since the MCP server doesn't have a dedicated endpoint for getting conversations,
+    // we'll return an empty array for now
+    return new Observable<McpConversationResponse[]>(observer => {
+      observer.next([]);
+      observer.complete();
+    });
   }
 }

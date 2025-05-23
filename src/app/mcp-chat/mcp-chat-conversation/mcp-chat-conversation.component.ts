@@ -1,5 +1,5 @@
 // mcp-chat-conversation.component.ts
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { ChatMessage } from '../../chat/services/message-storage.service';
 
 @Component({
@@ -7,60 +7,89 @@ import { ChatMessage } from '../../chat/services/message-storage.service';
   templateUrl: './mcp-chat-conversation.component.html',
   styleUrls: ['./mcp-chat-conversation.component.scss']
 })
-export class McpChatConversationComponent {
+export class McpChatConversationComponent implements OnChanges {
   @Input() messages: ChatMessage[] = [];
   @Input() loading = false;
   @Output() sendMessage = new EventEmitter<string>();
-  
+
   @ViewChild('messageInput') messageInput!: ElementRef;
-  
-  onEnterPress(event: KeyboardEvent, input: HTMLTextAreaElement): void {
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['messages']) {
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 0);
+    }
+  }
+
+  onEnterPress(event: KeyboardEvent, inputElement: HTMLTextAreaElement): void {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
-      this.sendMessageFromInput(input);
+      this.sendMessageManually(inputElement);
     }
   }
-  
+
   sendMessageManually(input: HTMLTextAreaElement): void {
-    this.sendMessageFromInput(input);
-  }
-  
-  private sendMessageFromInput(input: HTMLTextAreaElement): void {
-    const message = input.value.trim();
-    if (message && !this.loading) {
-      this.sendMessage.emit(message);
+    if (input.value.trim() && !this.loading) {
+      this.sendMessage.emit(input.value);
       input.value = '';
-      this.adjustTextareaHeight(input);
+
+      // Reset textarea height
+      input.style.height = '24px';
     }
   }
-  
+
   adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
-    textarea.style.height = 'auto';
-    textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+    textarea.style.height = '24px';
+    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
   }
-  
+
+  private scrollToBottom(): void {
+    try {
+      const container = document.querySelector('.messages-container');
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    } catch (err) {
+      console.error('Error scrolling to bottom:', err);
+    }
+  }
+
   formatMessage(content: string): string {
     if (!content) return '';
-    
-    // Convert URLs to links
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    content = content.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
-    
-    // Convert markdown-style links [text](url)
-    const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-    content = content.replace(markdownLinkRegex, '<a href="$2" target="_blank">$1</a>');
-    
-    // Convert markdown-style bold **text**
-    const boldRegex = /\*\*([^*]+)\*\*/g;
-    content = content.replace(boldRegex, '<strong>$1</strong>');
-    
-    // Convert markdown-style italic *text*
-    const italicRegex = /\*([^*]+)\*/g;
-    content = content.replace(italicRegex, '<em>$1</em>');
-    
-    // Convert line breaks to <br>
-    content = content.replace(/\n/g, '<br>');
-    
-    return content;
+
+    // Enhanced markdown-like formatting
+    let formatted = content
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`(.*?)`/g, '<code>$1</code>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+      .replace(/\n/g, '<br>');
+
+    return formatted;
+  }
+
+  formatTime(timestamp: Date | string): string {
+    if (!timestamp) return '';
+
+    const date = new Date(timestamp);
+    const now = new Date();
+
+    // Same day
+    if (date.toDateString() === now.toDateString()) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // This week
+    const diff = now.getTime() - date.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (days < 7) {
+      const options: Intl.DateTimeFormatOptions = { weekday: 'long' };
+      return date.toLocaleDateString(undefined, options);
+    }
+
+    // Older
+    return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
   }
 }

@@ -2,25 +2,30 @@
   <div class="messages-container">
     <div *ngIf="messages.length === 0" class="empty-state">
       <div class="welcome-message">
+        <div class="welcome-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="512" height="512" viewBox="0 0 32 32"><path fill="#276578" d="m13.294 7.436.803 2.23a8.84 8.84 0 0 0 5.316 5.316l2.23.803a.229.229 0 0 1 0 .43l-2.23.803a8.84 8.84 0 0 0-5.316 5.316l-.803 2.23a.229.229 0 0 1-.43 0l-.803-2.23a8.84 8.84 0 0 0-5.316-5.316l-2.23-.803a.229.229 0 0 1 0-.43l2.23-.803a8.84 8.84 0 0 0 5.316-5.316l.803-2.23a.228.228 0 0 1 .43 0m10.038-5.359.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129a.116.116 0 0 1 .218 0m0 19.173.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129c.037-.102.182-.102.218 0" data-original="#000000"/></svg>
+        </div>
         <h3>Bonjour 👋</h3>
         <p>Comment puis-je vous aider aujourd'hui ?</p>
         <p class="mcp-note">Propulsé par MCP Server</p>
       </div>
     </div>
-    
+
     <div *ngFor="let message of messages" class="message" [ngClass]="message.role">
       <div class="avatar" [ngClass]="message.role">
-        <span *ngIf="message.role === 'user'">👤</span>
-        <span *ngIf="message.role === 'assistant'">🤖</span>
-        <span *ngIf="message.role === 'system'">⚙️</span>
+        <i *ngIf="message.role === 'user'" class="mdi mdi-account"></i>
+        <i *ngIf="message.role === 'assistant'" class="mdi mdi-robot"></i>
+        <i *ngIf="message.role === 'system'" class="mdi mdi-cog"></i>
       </div>
       <div class="content">
         <p [innerHTML]="formatMessage(message.content)"></p>
       </div>
     </div>
-    
+
     <div *ngIf="loading" class="message assistant">
-      <div class="avatar assistant">🤖</div>
+      <div class="avatar assistant">
+        <i class="mdi mdi-robot"></i>
+      </div>
       <div class="content">
         <div class="typing-indicator">
           <span></span>
@@ -30,19 +35,19 @@
       </div>
     </div>
   </div>
-  
+
   <div class="input-container">
-    <textarea 
+    <textarea
       #messageInput
-      class="message-input" 
-      placeholder="Tapez votre message..."
+      class="message-input"
+      placeholder="Type your message..."
       (keydown)="onEnterPress($event, messageInput)"
       (input)="adjustTextareaHeight(messageInput)"
       [disabled]="loading"
     ></textarea>
-    <button 
-      class="send-button" 
-      [disabled]="loading"
+    <button
+      class="send-button"
+      [disabled]="loading || !messageInput.value.trim()"
       (click)="sendMessageManually(messageInput)">
       <i class="mdi mdi-send"></i>
     </button>

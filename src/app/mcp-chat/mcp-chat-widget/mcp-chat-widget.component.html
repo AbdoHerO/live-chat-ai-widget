@@ -5,49 +5,59 @@
     *ngIf="!isExpanded"
     class="chat-button"
     (click)="toggleChat()">
-    <i class="mdi mdi-message-text chat-icon"></i>
+    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="512" height="512" viewBox="0 0 32 32"><path fill="#276578" d="m13.294 7.436.803 2.23a8.84 8.84 0 0 0 5.316 5.316l2.23.803a.229.229 0 0 1 0 .43l-2.23.803a8.84 8.84 0 0 0-5.316 5.316l-.803 2.23a.229.229 0 0 1-.43 0l-.803-2.23a8.84 8.84 0 0 0-5.316-5.316l-2.23-.803a.229.229 0 0 1 0-.43l2.23-.803a8.84 8.84 0 0 0 5.316-5.316l.803-2.23a.228.228 0 0 1 .43 0m10.038-5.359.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129a.116.116 0 0 1 .218 0m0 19.173.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129c.037-.102.182-.102.218 0" data-original="#000000"/></svg>
+    <span class="chat-button-text">MCP Assistant</span>
   </button>
 
-  <!-- Chat window (expanded state) -->
-  <div *ngIf="isExpanded" class="chat-window">
+  <!-- Chat container (expanded state) -->
+  <div *ngIf="isExpanded" class="chat-container">
     <!-- Header -->
     <div class="chat-header">
-      <div class="header-left">
-        <div class="logo">
-          <i class="mdi mdi-robot"></i>
-        </div>
-        <div class="title">
-          <h3>MCP Assistant</h3>
-          <span class="subtitle">Propulsé par MCP Server</span>
-        </div>
+      <!-- Back button when in conversation view -->
+      <button
+        *ngIf="activeTab === 'chat' && showConversation"
+        class="back-button"
+        (click)="showConversationList()">
+        <i class="mdi mdi-arrow-left"></i>
+      </button>
+
+      <!-- Title -->
+      <div class="header-title">
+        <span *ngIf="activeTab === 'home'">Accueil</span>
+        <span *ngIf="activeTab === 'chat' && !showConversation">Conversations</span>
+        <span *ngIf="activeTab === 'chat' && showConversation">
+          {{ getCurrentConversationTitle() }}
+        </span>
+        <span *ngIf="activeTab === 'help'">Centre d'aide</span>
+        <span *ngIf="activeTab === 'login'">Connexion MCP</span>
       </div>
-      <div class="header-right">
-        <button class="minimize-btn" (click)="toggleChat()">
-          <i class="mdi mdi-window-minimize"></i>
+
+      <!-- Tabs and close button -->
+      <div class="header-actions">
+        <div class="header-tabs">
+          <div
+            class="tab"
+            [class.active]="activeTab === 'home'"
+            (click)="setActiveTab('home')">
+            <i class="mdi mdi-home"></i>
+          </div>
+          <div
+            class="tab"
+            [class.active]="activeTab === 'chat'"
+            (click)="setActiveTab('chat')">
+            <i class="mdi mdi-message-text"></i>
+          </div>
+          <div
+            class="tab"
+            [class.active]="activeTab === 'help'"
+            (click)="setActiveTab('help')">
+            <i class="mdi mdi-information"></i>
+          </div>
+        </div>
+        <button class="close-button" (click)="toggleChat()">
+          <i class="mdi mdi-close"></i>
         </button>
       </div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="chat-tabs">
-      <button
-        class="tab-btn"
-        [class.active]="activeTab === 'home'"
-        (click)="setActiveTab('home')">
-        <i class="mdi mdi-home"></i>
-      </button>
-      <button
-        class="tab-btn"
-        [class.active]="activeTab === 'chat'"
-        (click)="setActiveTab('chat')">
-        <i class="mdi mdi-message-text-outline"></i>
-      </button>
-      <button
-        class="tab-btn"
-        [class.active]="activeTab === 'help'"
-        (click)="setActiveTab('help')">
-        <i class="mdi mdi-help-circle-outline"></i>
-      </button>
     </div>
 
     <!-- Content -->
@@ -104,6 +114,24 @@
       <!-- Help tab -->
       <div *ngIf="activeTab === 'help'" class="help-tab">
         <app-mcp-chat-help></app-mcp-chat-help>
+      </div>
+    </div>
+
+    <!-- Footer navigation -->
+    <div class="chat-footer">
+      <div class="footer-nav">
+        <div class="nav-item" [class.active]="activeTab === 'home'" (click)="setActiveTab('home')">
+          <i class="mdi mdi-home"></i>
+          <span>Accueil</span>
+        </div>
+        <div class="nav-item" [class.active]="activeTab === 'chat'" (click)="setActiveTab('chat')">
+          <i class="mdi mdi-message-text"></i>
+          <span>Messages</span>
+        </div>
+        <div class="nav-item" [class.active]="activeTab === 'help'" (click)="setActiveTab('help')">
+          <i class="mdi mdi-information"></i>
+          <span>Aide</span>
+        </div>
       </div>
     </div>
 

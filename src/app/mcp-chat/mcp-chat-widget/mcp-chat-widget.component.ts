@@ -121,13 +121,18 @@ export class McpChatWidgetComponent implements OnInit {
       // Create conversation in MCP server
       this.mcpService.createConversation('Nouvelle Conversation').subscribe({
         next: async (response) => {
-          // Create local conversation
-          const conversationId = await this.messageStorage.createConversation(response.title);
-          this.currentConversationId = conversationId;
-          this.conversations = await this.messageStorage.getConversations();
-          this.currentMessages = [];
-          this.showConversation = true;
-          this.isLoading = false;
+          try {
+            // Create local conversation
+            const conversationId = await this.messageStorage.createConversation(response.title);
+            this.currentConversationId = conversationId;
+            this.conversations = await this.messageStorage.getConversations();
+            this.currentMessages = [];
+            this.showConversation = true;
+            this.isLoading = false;
+          } catch (error) {
+            console.error('Error creating local conversation:', error);
+            this.handleApiError('Erreur lors de la création de la conversation locale');
+          }
         },
         error: (error) => {
           console.error('Error creating conversation:', error);
@@ -153,6 +158,17 @@ export class McpChatWidgetComponent implements OnInit {
 
   async loadAndShowConversation(conversationId: string) {
     await this.loadConversation(conversationId);
+  }
+
+  showConversationList() {
+    this.showConversation = false;
+  }
+
+  getCurrentConversationTitle(): string {
+    if (!this.currentConversationId) return 'Conversation';
+
+    const conversation = this.conversations.find(c => c.id === this.currentConversationId);
+    return conversation ? conversation.title : 'Conversation';
   }
 
   async deleteConversation(conversationId: string, event: Event) {
@@ -189,45 +205,68 @@ export class McpChatWidgetComponent implements OnInit {
   sendMessage(content: string) {
     if (!content.trim() || !this.currentConversationId) return;
 
-    // Save user message
-    const userMessage: ChatMessage = {
-      conversationId: this.currentConversationId,
-      role: 'user',
-      content: content,
-      timestamp: new Date()
-    };
+    try {
+      // Save user message
+      const userMessage: ChatMessage = {
+        conversationId: this.currentConversationId,
+        role: 'user',
+        content: content,
+        timestamp: new Date()
+      };
 
-    this.messageStorage.saveMessage(userMessage);
-    this.currentMessages = [...this.currentMessages, userMessage];
+      this.messageStorage.saveMessage(userMessage);
+      this.currentMessages = [...this.currentMessages, userMessage];
 
-    // Update title if first message
-    this.messageStorage.getMessages(this.currentConversationId).then(messages => {
-      if (messages.length === 1) {
-        const title = content.split(' ').slice(0, 4).join(' ') + '...';
-        this.updateConversationTitle(this.currentConversationId!, title);
-      }
-    });
+      // Update title if first message
+      this.messageStorage.getMessages(this.currentConversationId).then(messages => {
+        if (messages.length === 1) {
+          const title = content.split(' ').slice(0, 4).join(' ') + '...';
+          this.updateConversationTitle(this.currentConversationId!, title);
+        }
+      });
 
-    // Call MCP API
-    this.isLoading = true;
-    this.mcpService.sendMessage(content, this.currentConversationId).subscribe({
-      next: async (response) => {
-        const assistantMessage: ChatMessage = {
-          conversationId: this.currentConversationId!,
-          role: 'assistant',
-          content: response.content,
-          timestamp: new Date(response.timestamp)
-        };
+      // Call MCP API
+      this.isLoading = true;
+      this.mcpService.sendMessage(content, this.currentConversationId).subscribe({
+        next: async (response) => {
+          try {
+            // Convert the role to the expected format
+            let messageRole: 'user' | 'assistant' | 'system' = 'assistant';
 
-        await this.messageStorage.saveMessage(assistantMessage);
-        this.currentMessages = [...this.currentMessages, assistantMessage];
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('MCP API error:', error);
-        this.handleApiError('Erreur lors de la communication avec le serveur MCP');
-      }
-    });
+            // If the role is specified in the response, try to convert it
+            if (response.role) {
+              const roleLower = response.role.toLowerCase();
+              if (roleLower === 'user') {
+                messageRole = 'user';
+              } else if (roleLower === 'system') {
+                messageRole = 'system';
+              }
+            }
+
+            const assistantMessage: ChatMessage = {
+              conversationId: this.currentConversationId!,
+              role: messageRole,
+              content: response.content,
+              timestamp: new Date(response.timestamp)
+            };
+
+            await this.messageStorage.saveMessage(assistantMessage);
+            this.currentMessages = [...this.currentMessages, assistantMessage];
+            this.isLoading = false;
+          } catch (error) {
+            console.error('Error saving assistant message:', error);
+            this.handleApiError('Erreur lors de l\'enregistrement de la réponse');
+          }
+        },
+        error: (error) => {
+          console.error('MCP API error:', error);
+          this.handleApiError('Erreur lors de la communication avec le serveur MCP');
+        }
+      });
+    } catch (error) {
+      console.error('Error in sendMessage:', error);
+      this.handleApiError('Erreur lors de l\'envoi du message');
+    }
   }
 
   handleApiError(message: string) {
