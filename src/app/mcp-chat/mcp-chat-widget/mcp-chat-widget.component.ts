@@ -121,6 +121,7 @@ export class McpChatWidgetComponent implements OnInit {
   }
 
   async startNewConversation() {
+    console.log('🆕 Angular: Starting new conversation');
     try {
       this.isLoading = true;
 
@@ -130,6 +131,7 @@ export class McpChatWidgetComponent implements OnInit {
           try {
             // Create local conversation
             const conversationId = await this.messageStorage.createConversation(response.title);
+            console.log('🆕 Angular: Created new conversation with ID:', conversationId);
             this.currentConversationId = conversationId;
             this.conversations = await this.messageStorage.getConversations();
             this.currentMessages = [];
@@ -211,6 +213,9 @@ export class McpChatWidgetComponent implements OnInit {
   sendMessage(content: string) {
     if (!content.trim() || !this.currentConversationId) return;
 
+    console.log('🔍 Angular: Sending message with conversation ID:', this.currentConversationId);
+    console.log('🔍 Angular: Message content:', content);
+
     try {
       // Save user message
       const userMessage: ChatMessage = {
@@ -233,6 +238,7 @@ export class McpChatWidgetComponent implements OnInit {
 
       // Call MCP API
       this.isLoading = true;
+      console.log('🚀 Angular: Calling MCP service with conversation ID:', this.currentConversationId);
       this.mcpService.sendMessage(content, this.currentConversationId).subscribe({
         next: async (response) => {
           try {

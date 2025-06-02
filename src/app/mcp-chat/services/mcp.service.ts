@@ -9,6 +9,7 @@ export interface McpChatRequest {
   conversationId: string;
   content: string;
   username: string;
+  backend?: string; // Optional backend selection (chat-mcp or win-mcp)
 }
 
 export interface McpChatResponse {
@@ -58,7 +59,8 @@ export class McpService {
       this.authToken = savedToken;
     }
 
-    const savedUsername = localStorage.getItem('mcp_username');
+    // Check both possible username keys (for compatibility with AuthService)
+    const savedUsername = localStorage.getItem('mcp_username') || localStorage.getItem('auth_username');
     if (savedUsername) {
       this.username = savedUsername;
     }
@@ -67,7 +69,10 @@ export class McpService {
   // Set username
   setUsername(username: string): void {
     this.username = username;
+    // Save to both keys for compatibility
     localStorage.setItem('mcp_username', username);
+    localStorage.setItem('auth_username', username);
+    console.log('🔧 MCP Service: Username set to:', username);
   }
 
   // Get username
@@ -113,14 +118,28 @@ export class McpService {
 
   // Send a message to the MCP server
   sendMessage(content: string, conversationId: string): Observable<McpChatResponse> {
-    // For now, we'll skip authentication since the MCP server doesn't require it
+    // Ensure we have the latest username from localStorage
+    const latestUsername = localStorage.getItem('auth_username') || localStorage.getItem('mcp_username') || this.username;
+    if (latestUsername !== this.username) {
+      console.log('🔄 MCP Service: Updating username from localStorage:', latestUsername);
+      this.username = latestUsername;
+    }
+
+    // Get the selected backend from localStorage (set by AuthService)
+    const selectedBackend = localStorage.getItem('selected_backend') || 'win-mcp'; // Default to win-mcp
+    console.log('🔄 MCP Service: Using backend from localStorage:', selectedBackend);
+
     const chatRequest: McpChatRequest = {
       conversationId,
       content,
-      username: this.username
+      username: this.username,
+      backend: selectedBackend
     };
 
-    console.log('Sending request to MCP server:', `${this.baseUrl}/api/chat`, chatRequest);
+    console.log('🚀 Sending request to MCP server:', `${this.baseUrl}/api/chat`);
+    console.log('📋 Request payload:', chatRequest);
+    console.log('👤 Using username:', this.username);
+    console.log('🏢 Using backend:', selectedBackend);
 
     return this.http.post<McpChatResponse>(
       `${this.baseUrl}/api/chat`,

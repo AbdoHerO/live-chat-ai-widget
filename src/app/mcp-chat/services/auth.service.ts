@@ -104,6 +104,12 @@ export class AuthService {
    * Authenticate user based on current backend
    */
   authenticate(username: string, password: string): Observable<DualAuthResult> {
+    console.log(`🔐 Starting authentication for ${this.currentBackend} with username: ${username}`);
+
+    // Save the selected backend to localStorage for MCP service
+    localStorage.setItem('selected_backend', this.currentBackend);
+    console.log('💾 Saved selected backend to localStorage:', this.currentBackend);
+
     if (this.currentBackend === 'chat-mcp') {
       return this.authenticateChatMcp(username, password);
     } else {
