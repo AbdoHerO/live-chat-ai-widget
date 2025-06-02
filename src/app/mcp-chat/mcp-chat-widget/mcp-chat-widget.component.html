@@ -72,7 +72,8 @@
         <app-mcp-chat-home
           (askQuestion)="handleAskQuestion($event)"
           (selectArticle)="handleSelectArticle($event)"
-          (navigateToHelpTab)="setActiveTab('help')">
+          (navigateToHelpTab)="setActiveTab('help')"
+          (logout)="handleLogout()">
         </app-mcp-chat-home>
       </div>
 

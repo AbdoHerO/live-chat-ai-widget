@@ -1,5 +1,6 @@
 // mcp-chat-home.component.ts
 import { Component, Output, EventEmitter } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-mcp-chat-home',
@@ -10,6 +11,9 @@ export class McpChatHomeComponent {
   @Output() askQuestion = new EventEmitter<string>();
   @Output() selectArticle = new EventEmitter<string>();
   @Output() navigateToHelpTab = new EventEmitter<void>();
+  @Output() logout = new EventEmitter<void>();
+
+  constructor(private authService: AuthService) {}
 
   suggestedQuestions: string[] = [
     'Quel est mon solde actuel ?',
@@ -44,5 +48,22 @@ export class McpChatHomeComponent {
 
   onNavigateToHelp(): void {
     this.navigateToHelpTab.emit();
+  }
+
+  onLogout(): void {
+    this.authService.logout();
+    this.logout.emit();
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
+  getCurrentBackend(): string {
+    return this.authService.getCurrentBackend();
+  }
+
+  getCurrentUsername(): string {
+    return this.authService.getCurrentUsername() || 'Utilisateur';
   }
 }

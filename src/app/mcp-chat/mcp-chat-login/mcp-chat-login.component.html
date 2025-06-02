@@ -7,25 +7,86 @@
     <h2>MCP Assistant</h2>
     <p>Connectez-vous pour accéder à vos informations personnelles</p>
   </div>
+
+  <!-- Backend Selection -->
+  <div class="backend-selection">
+    <h3>Sélection du Backend</h3>
+    <div class="backend-options">
+      <label class="backend-option" [class.selected]="selectedBackend === 'chat-mcp'">
+        <input
+          type="radio"
+          name="backend"
+          value="chat-mcp"
+          [checked]="selectedBackend === 'chat-mcp'"
+          (change)="onBackendChange('chat-mcp')"
+          [disabled]="isLoading">
+        <div class="option-content">
+          <div class="option-title">Chat-MCP</div>
+          <div class="option-subtitle">Authentification Simple</div>
+          <div class="option-description">Système de démonstration</div>
+        </div>
+      </label>
+
+      <label class="backend-option" [class.selected]="selectedBackend === 'win-mcp'">
+        <input
+          type="radio"
+          name="backend"
+          value="win-mcp"
+          [checked]="selectedBackend === 'win-mcp'"
+          (change)="onBackendChange('win-mcp')"
+          [disabled]="isLoading">
+        <div class="option-content">
+          <div class="option-title">Win-MCP</div>
+          <div class="option-subtitle">Authentification Duale</div>
+          <div class="option-description">Système de pharmacie (Tenant + Utilisateur)</div>
+        </div>
+      </label>
+    </div>
+
+    <!-- Backend Info -->
+    <div class="backend-info">
+      <div class="info-item">
+        <strong>Backend sélectionné:</strong> {{ getBackendInfo().name }}
+      </div>
+      <div class="info-item">
+        <strong>Type d'authentification:</strong> {{ getBackendInfo().authType }}
+      </div>
+      <div class="info-item description">
+        {{ getBackendInfo().description }}
+      </div>
+    </div>
+  </div>
   
   <div class="login-form">
+    <!-- Win-MCP specific guidance -->
+    <div *ngIf="selectedBackend === 'win-mcp'" class="auth-guidance">
+      <div class="guidance-box">
+        <h4>🔐 Authentification Win-MCP</h4>
+        <p><strong>Étape 1:</strong> Tenant (automatique) → <code>0001/123456</code></p>
+        <p><strong>Étape 2:</strong> Utilisateur (à saisir) → <code>user1/password</code> ou <code>user2/password</code></p>
+        <p class="note">⚠️ Entrez uniquement vos identifiants utilisateur ci-dessous</p>
+      </div>
+    </div>
+
     <div class="form-group">
-      <label for="username">Nom d'utilisateur</label>
-      <input 
-        type="text" 
-        id="username" 
-        [(ngModel)]="username" 
-        placeholder="Entrez votre nom d'utilisateur"
+      <label for="username">
+        {{ selectedBackend === 'win-mcp' ? 'Nom d\'utilisateur (user1 ou user2)' : 'Nom d\'utilisateur' }}
+      </label>
+      <input
+        type="text"
+        id="username"
+        [(ngModel)]="username"
+        [placeholder]="selectedBackend === 'win-mcp' ? 'user1 ou user2' : 'Entrez votre nom d\'utilisateur'"
         [disabled]="isLoading">
     </div>
-    
+
     <div class="form-group">
       <label for="password">Mot de passe</label>
-      <input 
-        type="password" 
-        id="password" 
-        [(ngModel)]="password" 
-        placeholder="Entrez votre mot de passe"
+      <input
+        type="password"
+        id="password"
+        [(ngModel)]="password"
+        placeholder="password"
         [disabled]="isLoading">
     </div>
     
@@ -45,10 +106,34 @@
   <div class="quick-login">
     <p>Connexion rapide pour la démo :</p>
     <div class="quick-login-buttons">
-      <button (click)="quickLogin('user1')">user1</button>
-      <button (click)="quickLogin('user2')">user2</button>
-      <button (click)="quickLogin('admin')">admin</button>
+      <button (click)="quickLogin('user1')" [disabled]="isLoading">user1</button>
+      <button (click)="quickLogin('user2')" [disabled]="isLoading">user2</button>
+      <button (click)="quickLogin('admin')" [disabled]="isLoading">admin</button>
     </div>
     <p class="note">Mot de passe par défaut : "password"</p>
+
+    <!-- Authentication Process Info -->
+    <div class="auth-process-info" *ngIf="selectedBackend === 'win-mcp'">
+      <div class="info-box">
+        <h4>🔐 Processus d'Authentification Duale Win-MCP</h4>
+        <ol>
+          <li><strong>Étape 1:</strong> Authentification du tenant (automatique)</li>
+          <li><strong>Étape 2:</strong> Authentification de l'utilisateur</li>
+          <li><strong>Résultat:</strong> Deux tokens (BearerTenant + Bearer)</li>
+        </ol>
+        <p class="note">Le système gère automatiquement l'authentification duale.</p>
+      </div>
+    </div>
+
+    <div class="auth-process-info" *ngIf="selectedBackend === 'chat-mcp'">
+      <div class="info-box">
+        <h4>🔑 Processus d'Authentification Simple Chat-MCP</h4>
+        <ol>
+          <li><strong>Étape 1:</strong> Authentification de l'utilisateur</li>
+          <li><strong>Résultat:</strong> Un token Bearer</li>
+        </ol>
+        <p class="note">Authentification standard avec un seul token.</p>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 // mcp-chat-widget.component.ts
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { McpService } from '../services/mcp.service';
+import { AuthService } from '../services/auth.service';
 import { MessageStorageService, ChatMessage, Conversation } from '../../chat/services/message-storage.service';
 
 @Component({
@@ -22,14 +23,14 @@ export class McpChatWidgetComponent implements OnInit {
 
   constructor(
     private mcpService: McpService,
+    private authService: AuthService,
     private messageStorage: MessageStorageService
   ) {}
 
   async ngOnInit() {
     try {
-      // Check if user is authenticated
-      const authToken = localStorage.getItem('mcp_auth_token');
-      this.isAuthenticated = !!authToken;
+      // Check if user is authenticated using the new AuthService
+      this.isAuthenticated = this.authService.isAuthenticated();
 
       // If not authenticated, show login tab
       if (!this.isAuthenticated) {
@@ -59,9 +60,14 @@ export class McpChatWidgetComponent implements OnInit {
   }
 
   handleLoginSuccess() {
-    this.isAuthenticated = true;
+    this.isAuthenticated = this.authService.isAuthenticated();
     this.activeTab = 'home';
+    this.error = null;
     this.loadConversations();
+
+    // Log the current backend and authentication type
+    console.log(`✅ Login successful for backend: ${this.authService.getCurrentBackend()}`);
+    console.log(`🔐 Authentication type: ${this.authService.getAuthTypeDisplay()}`);
   }
 
   toggleChat() {
@@ -70,7 +76,7 @@ export class McpChatWidgetComponent implements OnInit {
 
   setActiveTab(tab: 'home' | 'chat' | 'help' | 'login') {
     // If not authenticated and trying to access a tab other than login, redirect to login
-    if (!this.isAuthenticated && tab !== 'login') {
+    if (!this.authService.isAuthenticated() && tab !== 'login') {
       this.activeTab = 'login';
       this.error = 'Veuillez vous connecter pour accéder à cette fonctionnalité';
       return;
@@ -87,7 +93,7 @@ export class McpChatWidgetComponent implements OnInit {
   // Add this method to handle question from home screen
   async handleAskQuestion(question: string) {
     // Check if authenticated
-    if (!this.isAuthenticated) {
+    if (!this.authService.isAuthenticated()) {
       this.activeTab = 'login';
       this.error = 'Veuillez vous connecter pour poser une question';
       return;
@@ -285,6 +291,17 @@ export class McpChatWidgetComponent implements OnInit {
       this.messageStorage.saveMessage(errorMessage);
       this.currentMessages = [...this.currentMessages, errorMessage];
     }
+  }
+
+  handleLogout() {
+    // Clear conversations and messages
+    this.conversations = [];
+    this.currentMessages = [];
+    this.currentConversationId = null;
+    this.showConversation = false;
+
+    // Navigate to login tab
+    this.setActiveTab('login');
   }
 
   formatDate(date: Date): string {

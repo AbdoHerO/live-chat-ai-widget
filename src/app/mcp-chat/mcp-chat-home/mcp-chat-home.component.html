@@ -10,6 +10,19 @@
     <h2 class="greeting">Bienvenue sur MCP Assistant</h2>
     <p class="subgreeting">Je peux vous aider avec vos informations personnelles et répondre à vos questions générales.</p>
     <p class="info-text">Pour les questions sur vos données personnelles, choisissez l'option 1 quand je vous le demanderai.</p>
+
+    <!-- User info and logout section -->
+    <div *ngIf="isLoggedIn()" class="user-info-section">
+      <div class="user-info">
+        <i class="mdi mdi-account-circle"></i>
+        <span class="username">{{ getCurrentUsername() }}</span>
+        <span class="backend-badge">{{ getCurrentBackend() }}</span>
+      </div>
+      <button class="logout-btn" (click)="onLogout()" title="Se déconnecter">
+        <i class="mdi mdi-logout"></i>
+        <span>Déconnexion</span>
+      </button>
+    </div>
   </div>
 
   <!-- Ask a question input -->
