@@ -93,9 +93,12 @@ export class OpenaiService {
                         }
                       }
                     }
-                    
-                    return { 
-                      message: content.trim() || 'Réponse vide.', 
+
+                    // Nettoyer les citations de sources
+                    const cleanedContent = this.cleanSourceCitations(content);
+
+                    return {
+                      message: cleanedContent.trim() || 'Réponse vide.',
                       threadId: currentThreadId  // Retourner l'ID du thread pour réutilisation
                     };
                   }),
@@ -156,7 +159,7 @@ export class OpenaiService {
         this.http.get(`${this.baseUrl}/threads/${threadId}/runs/${runId}`, { headers }).subscribe({
           next: (runStatus: any) => {
             console.log(`Run status: ${runStatus.status}`);
-            
+
             if (runStatus.status === 'completed') {
               observer.next(runStatus);
               observer.complete();
@@ -172,9 +175,22 @@ export class OpenaiService {
           }
         });
       };
-      
+
       // Démarrer la vérification du statut
       checkStatus();
     });
+  }
+
+  /**
+   * Nettoie les citations de sources du contenu de la réponse
+   * Supprime les patterns comme 【16:1†winpluspharm_platform_rag.txt】
+   */
+  private cleanSourceCitations(content: string): string {
+    if (!content) return content;
+
+    // Pattern pour matcher les citations de sources: 【...】
+    const citationPattern = /【[^】]*】/g;
+
+    return content.replace(citationPattern, '').trim();
   }
 }
