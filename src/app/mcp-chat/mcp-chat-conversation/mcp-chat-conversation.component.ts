@@ -34,14 +34,41 @@ export class McpChatConversationComponent implements OnChanges {
       this.sendMessage.emit(input.value);
       input.value = '';
 
-      // Reset textarea height
+      // Reset textarea height to minimum
+      input.style.height = 'auto';
       input.style.height = '24px';
+      input.style.overflowY = 'hidden';
+
+      // Auto-focus the textarea for next message
+      setTimeout(() => {
+        input.focus();
+      }, 100);
     }
   }
 
+  // Professional auto-resize textarea based on content lines
   adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
-    textarea.style.height = '24px';
-    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+    // Reset height to auto to get the natural height
+    textarea.style.height = 'auto';
+
+    // Calculate the number of lines
+    const lineHeight = 24; // Base line height in pixels
+    const maxHeight = lineHeight * 6; // Maximum 6 lines
+    const minHeight = lineHeight * 1; // Minimum 1 line
+
+    // Get the scroll height (natural content height)
+    const scrollHeight = textarea.scrollHeight;
+
+    // Set height based on content, but within min/max bounds
+    const newHeight = Math.min(Math.max(scrollHeight, minHeight), maxHeight);
+    textarea.style.height = newHeight + 'px';
+
+    // Enable scrolling if content exceeds max height
+    if (scrollHeight > maxHeight) {
+      textarea.style.overflowY = 'auto';
+    } else {
+      textarea.style.overflowY = 'hidden';
+    }
   }
 
   private scrollToBottom(): void {

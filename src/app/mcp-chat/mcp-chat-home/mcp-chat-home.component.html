@@ -1,69 +1,112 @@
-<!-- mcp-chat-home.component.html -->
+<!-- Professional Clean MCP Home Page Structure -->
 <div class="home-container app-mcp-chat-home-root">
-  <!-- bg image -->
-  <div class="bg-image" (click)="onAskQuestion()">
-    <img src="../../../../assets/images/chatbot-bg.svg" alt="background image">
-  </div>
+  <!-- Hero Section with Clean Welcome -->
+  <section class="hero-section" aria-label="Section d'accueil MCP">
+    <!-- Welcome Message -->
+    <div class="welcome-content">
+      <h1 class="welcome-title">Bienvenue sur MCP Assistant 🤖</h1>
+      <p class="welcome-subtitle">Je peux vous aider avec vos informations personnelles et répondre à vos questions générales.</p>
+      <p class="info-badge">💡 Pour les questions sur vos données personnelles, choisissez l'option 1 quand je vous le demanderai.</p>
+    </div>
 
-  <!-- Welcome message -->
-  <div class="welcome-section">
-    <h2 class="greeting">Bienvenue sur MCP Assistant</h2>
-    <p class="subgreeting">Je peux vous aider avec vos informations personnelles et répondre à vos questions générales.</p>
-    <p class="info-text">Pour les questions sur vos données personnelles, choisissez l'option 1 quand je vous le demanderai.</p>
-
-    <!-- User info and logout section -->
-    <div *ngIf="isLoggedIn()" class="user-info-section">
-      <div class="user-info">
-        <i class="mdi mdi-account-circle"></i>
-        <span class="username">{{ getCurrentUsername() }}</span>
-        <span class="backend-badge">{{ getCurrentBackend() }}</span>
+    <!-- User Info Section -->
+    <div *ngIf="isLoggedIn()" class="user-info-card">
+      <div class="user-details">
+        <div class="user-avatar">
+          <i class="mdi mdi-account-circle" aria-hidden="true"></i>
+        </div>
+        <div class="user-text">
+          <span class="username">{{ getCurrentUsername() }}</span>
+          <span class="backend-badge">{{ getCurrentBackend() }}</span>
+        </div>
       </div>
-      <button class="logout-btn" (click)="onLogout()" title="Se déconnecter">
-        <i class="mdi mdi-logout"></i>
+      <button class="logout-btn"
+              (click)="onLogout()"
+              aria-label="Se déconnecter"
+              type="button">
+        <i class="mdi mdi-logout" aria-hidden="true"></i>
         <span>Déconnexion</span>
       </button>
     </div>
-  </div>
 
-  <!-- Ask a question input -->
-  <div class="question-input" (click)="onAskQuestion()">
-    <span class="input-placeholder">Posez une question sur vos données personnelles ou une question générale</span>
-    <div class="input-icon">
-      <i class="mdi mdi-keyboard"></i>
-    </div>
-  </div>
-
-  <!-- Suggested questions -->
-  <div class="suggested-questions">
-    <h3>Questions suggérées sur vos données personnelles</h3>
-    <div class="question-list">
-      <div
-        *ngFor="let question of suggestedQuestions"
-        class="question-item"
-        (click)="onSelectQuestion(question)">
-        <i class="mdi mdi-help-circle-outline"></i>
-        <span>{{ question }}</span>
+    <!-- Main Action Button -->
+    <button class="start-chat-button"
+            (click)="onAskQuestion()"
+            aria-label="Commencer une nouvelle conversation MCP">
+      <div class="button-content">
+        <i class="mdi mdi-message-text-outline" aria-hidden="true"></i>
+        <span>Commencer une conversation</span>
       </div>
-    </div>
-  </div>
+    </button>
+  </section>
 
-  <!-- Popular articles -->
-  <div class="popular-articles">
-    <h3>Guides d'utilisation de vos données MCP</h3>
-    <div class="article-list">
-      <div
-        *ngFor="let article of popularArticles"
-        class="article-item"
-        (click)="onSelectArticle(article.id)">
-        <i class="mdi mdi-{{ article.icon }}"></i>
-        <span>{{ article.title }}</span>
-      </div>
-    </div>
-  </div>
+  <!-- Quick Actions Section -->
+  <section class="quick-actions-section" aria-label="Actions rapides MCP">
+    <h2 class="section-title">Actions rapides</h2>
 
-  <!-- Help link -->
-  <div class="help-link" (click)="onNavigateToHelp()">
-    <i class="mdi mdi-help-circle"></i>
-    <span>Besoin d'aide avec l'accès à vos données personnelles ?</span>
-  </div>
+    <div class="action-grid">
+      <button class="action-card"
+              (click)="onSelectQuestion('Quelles sont mes informations personnelles ?')"
+              aria-label="Consulter mes données personnelles">
+        <div class="action-icon">
+          <i class="mdi mdi-account-details" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <h3>Mes données</h3>
+          <p>Consultez vos informations personnelles</p>
+        </div>
+      </button>
+
+      <button class="action-card"
+              (click)="onSelectQuestion('Montrez-moi mes transactions récentes')"
+              aria-label="Voir mes transactions">
+        <div class="action-icon">
+          <i class="mdi mdi-credit-card-outline" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <h3>Transactions</h3>
+          <p>Consultez vos transactions récentes</p>
+        </div>
+      </button>
+
+      <button class="action-card"
+              (click)="onSelectQuestion('Pouvez-vous m\'aider avec une question générale ?')"
+              aria-label="Poser une question générale">
+        <div class="action-icon">
+          <i class="mdi mdi-help-circle-outline" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <h3>Questions générales</h3>
+          <p>Obtenez de l'aide sur tout sujet</p>
+        </div>
+      </button>
+
+      <button class="action-card"
+              (click)="onNavigateToHelp()"
+              aria-label="Accéder au centre d'aide">
+        <div class="action-icon">
+          <i class="mdi mdi-lifebuoy" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <h3>Centre d'aide</h3>
+          <p>Guides et documentation</p>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- Popular Topics Section -->
+  <section class="popular-topics-section" aria-label="Sujets populaires MCP">
+    <h2 class="section-title">Questions fréquentes</h2>
+
+    <div class="topics-list">
+      <button *ngFor="let question of suggestedQuestions"
+              class="topic-item"
+              (click)="onSelectQuestion(question)"
+              [attr.aria-label]="'Poser la question: ' + question">
+        <span class="topic-text">{{ question }}</span>
+        <i class="mdi mdi-chevron-right topic-arrow" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
 </div>

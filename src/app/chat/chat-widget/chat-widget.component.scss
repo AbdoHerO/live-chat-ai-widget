@@ -657,7 +657,7 @@ $tablet-breakpoint: 768px;
 
       @media (max-width: $mobile-breakpoint) {
         font-size: 10px;
-        margin: $spacing-xs / 2;
+        margin: calc($spacing-xs / 2);
         padding: $spacing-xs;
       }
 

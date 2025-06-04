@@ -1,62 +1,92 @@
-<!-- src/app/chat/components/chat-home.component.html -->
+<!-- Professional Clean Home Page Structure -->
 <div class="home-container app-chat-home-root">
-    <!-- Welcome message -->
-    <!-- <div class="welcome-section">
-      <h2 class="greeting">Bonjour</h2>
-    <p class="subgreeting">Comment puis-je vous aider ?</p>
-    </div> -->
-    
-    <!-- Ask a question input -->
-    <!-- <div class="question-input" (click)="onAskQuestion()">
-      <span class="input-placeholder">Posez une question</span>
-      <div class="input-icon">
-        <i class="mdi mdi-keyboard"></i>
-      </div>
-    </div> -->
+  <!-- Hero Section with Clean Welcome -->
+  <section class="hero-section" aria-label="Section d'accueil">
+    <!-- Welcome Message -->
+    <div class="welcome-content">
+      <h1 class="welcome-title">Bonjour 👋</h1>
+      <p class="welcome-subtitle">Comment puis-je vous aider aujourd'hui ?</p>
+    </div>
 
-    <!-- bg image -->
-    <div class="bg-image" (click)="onAskQuestion()">
-      <img src="../../../../assets/images/chatbot-bg.svg" alt="background image">
-    </div>
-    
-    <!-- Featured articles -->
-    <div class="articles-section">
-      <div *ngFor="let article of featuredArticles" class="article-card" (click)="onSelectArticle(article.id)">
-        <!-- Show image if available -->
-        <div *ngIf="article.image" class="article-image" [style.background-image]="'url(' + article.image + ')'">
-          <div *ngIf="article.subtitle" class="article-subtitle">{{ article.subtitle }}</div>
-          <div *ngIf="article.title && article.subtitle" class="article-title-overlay">{{ article.title }}</div>
-        </div>
-        
-        <!-- Title without image -->
-        <h3 *ngIf="!article.image && article.title" class="article-title">{{ article.title }}</h3>
-        
-        <!-- Description and content -->
-        <div class="article-content">
-          <h4 *ngIf="article.description" class="article-description">{{ article.description }}</h4>
-          <p class="article-text">{{ article.content }}</p>
-        </div>
+    <!-- Main Action Button -->
+    <button class="start-chat-button"
+            (click)="onAskQuestion()"
+            aria-label="Commencer une nouvelle conversation">
+      <div class="button-content">
+        <i class="mdi mdi-message-text-outline" aria-hidden="true"></i>
+        <span>Commencer une conversation</span>
       </div>
-    </div>
-    
-    <!-- Search for help -->
-    <div class="search-section">
-      <div class="search-input">
-        <span class="search-placeholder">Rechercher de l'aide</span>
-        <div class="search-icon">
-          <i class="mdi mdi-magnify"></i>
+    </button>
+  </section>
+
+  <!-- Quick Actions Section -->
+  <section class="quick-actions-section" aria-label="Actions rapides">
+    <h2 class="section-title">Actions rapides</h2>
+
+    <div class="action-grid">
+      <button class="action-card"
+              (click)="onSelectQuestion('Comment puis-je vous aider avec mes questions techniques ?')"
+              aria-label="Poser une question technique">
+        <div class="action-icon">
+          <i class="mdi mdi-help-circle-outline" aria-hidden="true"></i>
         </div>
-      </div>
-    </div>
-    
-    <!-- Suggested questions -->
-    <div class="suggested-questions">
-      <div *ngFor="let question of suggestedQuestions" class="question-item" (click)="onSelectQuestion(question.text)">
-        <span class="question-text">{{ question.text }}</span>
-        <div class="question-arrow">
-          <i class="mdi mdi-chevron-right"></i>
+        <div class="action-content">
+          <h3>Questions techniques</h3>
+          <p>Obtenez de l'aide sur vos problèmes techniques</p>
         </div>
-      </div>
+      </button>
+
+      <button class="action-card"
+              (click)="onSelectQuestion('Pouvez-vous m\'expliquer comment utiliser cette fonctionnalité ?')"
+              aria-label="Demander des explications">
+        <div class="action-icon">
+          <i class="mdi mdi-lightbulb-outline" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <h3>Explications</h3>
+          <p>Comprenez mieux les fonctionnalités</p>
+        </div>
+      </button>
+
+      <button class="action-card"
+              (click)="onSelectQuestion('Avez-vous des conseils ou des bonnes pratiques à partager ?')"
+              aria-label="Obtenir des conseils">
+        <div class="action-icon">
+          <i class="mdi mdi-star-outline" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <h3>Conseils</h3>
+          <p>Découvrez les meilleures pratiques</p>
+        </div>
+      </button>
+
+      <button class="action-card"
+              (click)="onSelectQuestion('Pouvez-vous m\'aider à résoudre un problème spécifique ?')"
+              aria-label="Résoudre un problème">
+        <div class="action-icon">
+          <i class="mdi mdi-tools" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <h3>Dépannage</h3>
+          <p>Résolvez vos problèmes rapidement</p>
+        </div>
+      </button>
     </div>
-  </div>
+  </section>
+
+  <!-- Popular Topics Section -->
+  <section class="popular-topics-section" aria-label="Sujets populaires">
+    <h2 class="section-title">Sujets populaires</h2>
+
+    <div class="topics-list">
+      <button *ngFor="let question of suggestedQuestions"
+              class="topic-item"
+              (click)="onSelectQuestion(question.text)"
+              [attr.aria-label]="'Poser la question: ' + question.text">
+        <span class="topic-text">{{ question.text }}</span>
+        <i class="mdi mdi-chevron-right topic-arrow" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
+</div>
   
