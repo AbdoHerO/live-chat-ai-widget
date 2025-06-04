@@ -49,7 +49,7 @@ export interface McpAuthResponse {
   providedIn: 'root'
 })
 export class McpService {
-  private baseUrl = environment.mcpServerUrl || 'http://localhost:8081';
+  private baseUrl = environment.mcpServerUrl || 'http://192.168.101.176:8081';
   private authToken: string | null = null;
   private username: string = 'user1'; // Default username
 
