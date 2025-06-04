@@ -10,11 +10,11 @@ export class McpChatHelpComponent {
   helpSections = [
     {
       title: 'Accéder à vos données personnelles',
-      content: 'Pour consulter vos informations personnelles, posez une question spécifique comme "Quel est mon solde actuel ?" et choisissez l\'option 1 (Base de données MCP) quand l\'assistant vous le demande.'
+      content: 'Pour consulter vos informations personnelles, posez une question spécifique comme "Quel est mon solde actuel ?" et choisissez l\'option 1 (Base de données internes) quand l\'assistant vous le demande.'
     },
     {
       title: 'Questions sur vos données personnelles',
-      content: 'Vous pouvez demander des informations sur votre solde, vos transactions récentes, votre numéro client, vos échéances de paiement, et d\'autres données personnelles stockées dans la base MCP.'
+      content: 'Vous pouvez demander des informations sur votre solde, vos transactions récentes, votre numéro client, vos échéances de paiement, et d\'autres données personnelles stockées dans la base interne.'
     },
     {
       title: 'Utiliser les connaissances générales',
@@ -26,11 +26,11 @@ export class McpChatHelpComponent {
     },
     {
       title: 'Confidentialité des données',
-      content: 'Vos données personnelles sont sécurisées dans la base MCP et ne sont jamais partagées avec des tiers. L\'assistant n\'y accède que lorsque vous choisissez explicitement l\'option 1.'
+      content: 'Vos données personnelles sont sécurisées dans la base interne et ne sont jamais partagées avec des tiers. L\'assistant n\'y accède que lorsque vous choisissez explicitement l\'option 1.'
     },
     {
-      title: 'À propos de MCP',
-      content: 'MCP (Microservice Control Plane) est une plateforme qui permet d\'intégrer des modèles d\'IA avancés avec des bases de données personnelles tout en respectant la confidentialité des données.'
+      title: 'À propos de Base interne',
+      content: 'Base interne est une plateforme qui permet d\'intégrer des modèles d\'IA avancés avec des bases de données personnelles tout en respectant la confidentialité des données.'
     }
   ];
 }
