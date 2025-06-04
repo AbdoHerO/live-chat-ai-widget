@@ -39,11 +39,13 @@ $tablet-breakpoint: 768px;
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0; // Allow flex shrinking
   overflow-y: auto;
   background: transparent;
   font-family: $font-family;
   padding: $spacing-xl $spacing-lg;
   gap: $spacing-xl;
+  box-sizing: border-box;
 
   &::-webkit-scrollbar {
     width: 4px;
