@@ -221,7 +221,7 @@ $tablet-breakpoint: 768px;
   }
 
   .header-tabs {
-    display: flex;
+    display: none; // flex
     gap: 8px;
 
     @media (max-width: $mobile-breakpoint) {
@@ -270,6 +270,94 @@ $tablet-breakpoint: 768px;
     &:hover {
       background-color: $secondary-color;
       color: $text-color;
+    }
+  }
+}
+
+// Knowledge Source Toggle
+.knowledge-toggle {
+  display: flex;
+  align-items: center;
+  margin: 0 8px;
+  padding: 10px 10px;
+
+  .toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+  }
+
+  .toggle-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &.active {
+      color: #4a6cfa;
+      font-weight: bold;
+      font-size: 12px;
+    }
+  }
+
+  .toggle-switch {
+    position: relative;
+    width: 36px;
+    height: 18px;
+    background-color: rgba(19, 18, 18, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(19, 18, 18, 0.2);
+    }
+
+    .toggle-slider {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background-color: #4a6cfa;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+      &.internal {
+        transform: translateX(18px);
+        background-color: $primary-color;
+      }
+    }
+  }
+
+  @media (max-width: $mobile-breakpoint) {
+    .toggle-container {
+      padding: 3px 6px;
+      gap: 6px;
+    }
+
+    .toggle-label {
+      font-size: 10px;
+    }
+
+    .toggle-switch {
+      width: 32px;
+      height: 16px;
+
+      .toggle-slider {
+        width: 12px;
+        height: 12px;
+
+        &.internal {
+          transform: translateX(16px);
+        }
+      }
     }
   }
 }

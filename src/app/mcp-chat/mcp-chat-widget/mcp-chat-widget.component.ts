@@ -20,6 +20,7 @@ export class McpChatWidgetComponent implements OnInit {
   isLoading = false;
   error: string | null = null;
   isAuthenticated = false;
+  knowledgeMode: 'general' | 'internal' = 'internal'; // Default to internal (database) mode
 
   constructor(
     private mcpService: McpService,
@@ -31,6 +32,12 @@ export class McpChatWidgetComponent implements OnInit {
     try {
       // Check if user is authenticated using the new AuthService
       this.isAuthenticated = this.authService.isAuthenticated();
+
+      // Load knowledge mode preference from localStorage
+      const savedKnowledgeMode = localStorage.getItem('mcp_knowledge_mode') as 'general' | 'internal';
+      if (savedKnowledgeMode) {
+        this.knowledgeMode = savedKnowledgeMode;
+      }
 
       // If not authenticated, show login tab
       if (!this.isAuthenticated) {
@@ -118,6 +125,15 @@ export class McpChatWidgetComponent implements OnInit {
   handleSelectArticle(articleId: string) {
     console.log('Selected article:', articleId);
     // Implementation for article selection
+  }
+
+  // Toggle between general and internal knowledge modes
+  toggleKnowledgeMode() {
+    this.knowledgeMode = this.knowledgeMode === 'general' ? 'internal' : 'general';
+    console.log('🔄 Knowledge mode changed to:', this.knowledgeMode);
+
+    // Save the preference to localStorage
+    localStorage.setItem('mcp_knowledge_mode', this.knowledgeMode);
   }
 
   async startNewConversation() {
@@ -239,7 +255,8 @@ export class McpChatWidgetComponent implements OnInit {
       // Call MCP API
       this.isLoading = true;
       console.log('🚀 Angular: Calling MCP service with conversation ID:', this.currentConversationId);
-      this.mcpService.sendMessage(content, this.currentConversationId).subscribe({
+      console.log('🧠 Angular: Using knowledge mode:', this.knowledgeMode);
+      this.mcpService.sendMessage(content, this.currentConversationId, this.knowledgeMode).subscribe({
         next: async (response) => {
           try {
             // Convert the role to the expected format

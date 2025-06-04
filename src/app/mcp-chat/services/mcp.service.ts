@@ -10,6 +10,7 @@ export interface McpChatRequest {
   content: string;
   username: string;
   backend?: string; // Optional backend selection (chat-mcp or win-mcp)
+  knowledgeMode?: 'general' | 'internal'; // Knowledge source mode
 }
 
 export interface McpChatResponse {
@@ -117,7 +118,7 @@ export class McpService {
   }
 
   // Send a message to the MCP server
-  sendMessage(content: string, conversationId: string): Observable<McpChatResponse> {
+  sendMessage(content: string, conversationId: string, knowledgeMode: 'general' | 'internal' = 'internal'): Observable<McpChatResponse> {
     // Ensure we have the latest username from localStorage
     const latestUsername = localStorage.getItem('auth_username') || localStorage.getItem('mcp_username') || this.username;
     if (latestUsername !== this.username) {
@@ -133,13 +134,15 @@ export class McpService {
       conversationId,
       content,
       username: this.username,
-      backend: selectedBackend
+      backend: selectedBackend,
+      knowledgeMode: knowledgeMode
     };
 
     console.log('🚀 Sending request to MCP server:', `${this.baseUrl}/api/chat`);
     console.log('📋 Request payload:', chatRequest);
     console.log('👤 Using username:', this.username);
     console.log('🏢 Using backend:', selectedBackend);
+    console.log('🧠 Using knowledge mode:', knowledgeMode);
 
     return this.http.post<McpChatResponse>(
       `${this.baseUrl}/api/chat`,
