@@ -18,7 +18,16 @@ export class McpChatConversationComponent implements OnChanges {
     if (changes['messages']) {
       setTimeout(() => {
         this.scrollToBottom();
-      }, 0);
+        // Auto-focus textarea after receiving new messages (for continuous conversation flow)
+        this.focusTextarea();
+      }, 100);
+    }
+  }
+
+  // Helper method to focus the textarea
+  private focusTextarea(): void {
+    if (this.messageInput?.nativeElement) {
+      this.messageInput.nativeElement.focus();
     }
   }
 

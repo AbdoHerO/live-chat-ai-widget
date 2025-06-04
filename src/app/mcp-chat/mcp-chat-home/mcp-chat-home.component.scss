@@ -246,10 +246,13 @@ $tablet-breakpoint: 768px;
   .action-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: $spacing-md;
+    gap: $spacing-sm;
+    width: 100%;
+    max-width: 100%;
 
     @media (max-width: $mobile-breakpoint) {
       grid-template-columns: 1fr;
+      gap: $spacing-md;
     }
 
     .action-card {
@@ -257,14 +260,17 @@ $tablet-breakpoint: 768px;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: $radius-lg;
-      padding: $spacing-lg;
+      padding: $spacing-md;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: $shadow-sm;
       text-align: left;
       display: flex;
       align-items: flex-start;
-      gap: $spacing-md;
+      gap: $spacing-sm;
+      min-width: 0; // Prevent flex items from overflowing
+      width: 100%;
+      box-sizing: border-box;
 
       &:hover {
         transform: translateY(-2px);
@@ -275,36 +281,45 @@ $tablet-breakpoint: 768px;
 
       .action-icon {
         flex-shrink: 0;
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-        border-radius: $radius-lg;
+        border-radius: $radius-md;
         display: flex;
         align-items: center;
         justify-content: center;
 
         i {
-          font-size: 24px;
+          font-size: 20px;
           color: $primary-color;
         }
       }
 
       .action-content {
         flex: 1;
+        min-width: 0; // Prevent text overflow
 
         h3 {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           color: $text-color;
           margin: 0 0 $spacing-xs 0;
           letter-spacing: -0.025em;
+          line-height: 1.2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         p {
-          font-size: 13px;
+          font-size: 12px;
           color: $text-light;
           margin: 0;
-          line-height: 1.4;
+          line-height: 1.3;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
       }
     }
