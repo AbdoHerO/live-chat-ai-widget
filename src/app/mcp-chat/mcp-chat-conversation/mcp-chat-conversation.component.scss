@@ -1,5 +1,9 @@
 // chat-conversation.component.scss
 
+:host {
+  height: 100%; 
+}
+
 $primary-color: #4a6cfa;
 $primary-light: #eef1ff;
 $secondary-color: #f8f9fd;

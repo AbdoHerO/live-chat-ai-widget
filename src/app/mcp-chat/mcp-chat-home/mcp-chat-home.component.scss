@@ -1,11 +1,61 @@
-// mcp-chat-home.component.scss
+// Professional MCP Chat Home Component Design (Identical to Direct OpenAI)
+
+// Professional Design System Variables (Matching Widget)
+$primary-color: #667eea;
+$primary-light: #f7fafc;
+$primary-dark: #5a67d8;
+$primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$secondary-color: #f8fafc;
+$accent-color: #4fd1c7;
+$text-color: #2d3748;
+$text-light: #718096;
+$text-muted: #a0aec0;
+$border-color: #e2e8f0;
+$background-color: #ffffff;
+$surface-color: #f7fafc;
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+$font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+// Spacing System
+$spacing-xs: 0.25rem;   // 4px
+$spacing-sm: 0.5rem;    // 8px
+$spacing-md: 1rem;      // 16px
+$spacing-lg: 1.5rem;    // 24px
+$spacing-xl: 2rem;      // 32px
+
+// Border Radius
+$radius-sm: 0.375rem;   // 6px
+$radius-md: 0.5rem;     // 8px
+$radius-lg: 0.75rem;    // 12px
+$radius-xl: 1rem;       // 16px
+
 .home-container {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  background: transparent;
+  font-family: $font-family;
+  padding: $spacing-lg;
   position: relative;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 2px;
+  }
 }
 
+// Professional Background Image Section
 .bg-image {
   position: absolute;
   top: 0;
@@ -15,75 +65,89 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0.05;
+  opacity: 0.03;
   pointer-events: none;
+  z-index: 0;
 
   img {
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 60%;
+    max-height: 60%;
+    filter: blur(1px);
   }
 }
 
+// Professional Welcome Section
 .welcome-section {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: $spacing-xl;
+  position: relative;
+  z-index: 1;
 
   .greeting {
-    font-size: 20px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: 700;
+    color: $text-color;
+    margin-bottom: $spacing-sm;
+    letter-spacing: -0.025em;
   }
 
   .subgreeting {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 8px;
+    font-size: 16px;
+    color: $text-light;
+    margin-bottom: $spacing-md;
+    font-weight: 500;
   }
 
   .info-text {
     font-size: 13px;
-    color: #4a6cfa;
+    color: $primary-color;
     font-style: italic;
-    background-color: #eef1ff;
-    padding: 8px 12px;
-    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    padding: $spacing-sm $spacing-md;
+    border-radius: $radius-lg;
     display: inline-block;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    backdrop-filter: blur(10px);
   }
 
   .user-info-section {
-    margin-top: 15px;
-    padding: 12px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
+    margin-top: $spacing-lg;
+    padding: $spacing-lg;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: $radius-lg;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: $shadow-sm;
 
     .user-info {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 10px;
-      gap: 8px;
+      margin-bottom: $spacing-md;
+      gap: $spacing-sm;
 
       i {
-        color: #0078d4;
-        font-size: 20px;
+        color: $primary-color;
+        font-size: 22px;
       }
 
       .username {
-        font-weight: 600;
-        color: #333;
-        font-size: 14px;
+        font-weight: 700;
+        color: $text-color;
+        font-size: 16px;
+        letter-spacing: -0.025em;
       }
 
       .backend-badge {
-        background-color: #0078d4;
+        background: $primary-gradient;
         color: white;
-        padding: 2px 8px;
-        border-radius: 12px;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $radius-xl;
         font-size: 11px;
-        font-weight: 500;
+        font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 0.025em;
+        box-shadow: $shadow-sm;
       }
     }
 
@@ -91,21 +155,28 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: $spacing-sm;
       width: 100%;
-      padding: 8px 12px;
-      background-color: #dc3545;
+      padding: $spacing-md;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
       color: white;
       border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 500;
+      border-radius: $radius-lg;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: $shadow-sm;
+      letter-spacing: 0.025em;
 
       &:hover {
-        background-color: #c82333;
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, #ff5252 0%, #d32f2f 100%);
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+      }
+
+      &:active {
+        transform: translateY(0);
       }
 
       i {
@@ -115,148 +186,209 @@
   }
 }
 
+// Professional Question Input
 .question-input {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 15px;
-  background-color: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  cursor: text;
-  transition: all 0.2s ease;
+  padding: $spacing-md $spacing-lg;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-xl;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: $shadow-sm;
+  position: relative;
+  z-index: 1;
 
   &:hover {
-    border-color: #0078d4;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(102, 126, 234, 0.3);
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
   }
 
   .input-placeholder {
-    color: #999;
+    color: $text-light;
     font-size: 14px;
+    font-weight: 500;
   }
 
   .input-icon {
-    color: #666;
+    color: $text-muted;
 
     i {
       font-size: 18px;
+      transition: all 0.3s ease;
     }
+  }
+
+  &:hover .input-icon i {
+    color: $primary-color;
   }
 }
 
+// Professional Suggested Questions
 .suggested-questions {
-  margin-bottom: 20px;
+  margin-bottom: $spacing-xl;
+  position: relative;
+  z-index: 1;
 
   h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-color;
+    margin-bottom: $spacing-md;
+    letter-spacing: -0.025em;
   }
 
   .question-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: $spacing-sm;
 
     .question-item {
       display: flex;
       align-items: center;
-      padding: 10px;
-      background-color: #f5f5f5;
-      border-radius: 8px;
+      padding: $spacing-md $spacing-lg;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: $radius-lg;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: $shadow-sm;
 
       &:hover {
-        background-color: #e6f2ff;
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-1px);
+        box-shadow: $shadow-md;
+        border-color: rgba(102, 126, 234, 0.2);
       }
 
       i {
-        color: #0078d4;
-        margin-right: 10px;
-        font-size: 18px;
+        color: $primary-color;
+        margin-right: $spacing-md;
+        font-size: 20px;
+        transition: all 0.3s ease;
       }
 
       span {
         font-size: 14px;
-        color: #333;
+        color: $text-color;
+        font-weight: 500;
+        letter-spacing: -0.025em;
+      }
+
+      &:hover i {
+        transform: scale(1.1);
       }
     }
   }
 }
 
+// Professional Popular Articles
 .popular-articles {
-  margin-bottom: 20px;
+  margin-bottom: $spacing-xl;
+  position: relative;
+  z-index: 1;
 
   h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-color;
+    margin-bottom: $spacing-md;
+    letter-spacing: -0.025em;
   }
 
   .article-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: $spacing-md;
 
     .article-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 15px;
-      background-color: white;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
+      padding: $spacing-lg;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: $radius-lg;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       text-align: center;
+      box-shadow: $shadow-sm;
 
       &:hover {
-        border-color: #0078d4;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(102, 126, 234, 0.3);
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
       }
 
       i {
-        color: #0078d4;
-        font-size: 24px;
-        margin-bottom: 8px;
+        color: $primary-color;
+        font-size: 28px;
+        margin-bottom: $spacing-sm;
+        transition: all 0.3s ease;
       }
 
       span {
-        font-size: 12px;
-        color: #333;
+        font-size: 13px;
+        color: $text-color;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+      }
+
+      &:hover i {
+        transform: scale(1.1);
       }
     }
   }
 }
 
+// Professional Help Link
 .help-link {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
+  padding: $spacing-md $spacing-lg;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: $radius-lg;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: $shadow-sm;
+  position: relative;
+  z-index: 1;
 
   &:hover {
-    background-color: #e6f2ff;
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+    border-color: rgba(102, 126, 234, 0.2);
   }
 
   i {
-    color: #0078d4;
-    margin-right: 8px;
-    font-size: 18px;
+    color: $primary-color;
+    margin-right: $spacing-sm;
+    font-size: 20px;
+    transition: all 0.3s ease;
   }
 
   span {
     font-size: 14px;
-    color: #333;
+    color: $text-color;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  &:hover i {
+    transform: scale(1.1);
   }
 }

@@ -17,6 +17,7 @@ export class ChatWidgetComponent implements OnInit {
   currentConversationId: string | null = null;
   currentMessages: ChatMessage[] = [];
   isLoading = false;
+  error: string | null = null;
   threadId: string | null = null;
   knowledgeMode: 'general' | 'internal' = 'internal'; // Default to internal (RAG) mode
   isAuthenticated = true; // For Direct OpenAI, always authenticated
@@ -210,14 +211,18 @@ export class ChatWidgetComponent implements OnInit {
 
   handleApiError(error: any) {
     console.error('Error getting response:', error);
+
+    // Set error message for toast display
+    this.error = "Erreur lors de la communication avec l'API. Veuillez vérifier votre configuration ou réessayer.";
+
     // Add an error message to the conversation
     const errorMessage: ChatMessage = {
       conversationId: this.currentConversationId!,
       role: 'assistant',
-      content: "I'm sorry, I encountered an error processing your request. Please check your API key configuration or try again later.",
+      content: "Je suis désolé, j'ai rencontré une erreur lors du traitement de votre demande. Veuillez vérifier votre configuration API ou réessayer plus tard.",
       timestamp: new Date()
     };
-    
+
     this.messageStorage.saveMessage(errorMessage);
     this.currentMessages = [...this.currentMessages, errorMessage];
     this.isLoading = false;

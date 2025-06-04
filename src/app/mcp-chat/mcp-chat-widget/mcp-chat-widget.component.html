@@ -1,28 +1,42 @@
-<!-- mcp-chat-widget.component.html -->
-<div class="chat-widget app-mcp-chat-widget-root" [class.expanded]="isExpanded">
-  <!-- Chat button (collapsed state) -->
+<!-- Professional MCP Chat Widget with Improved UX Structure -->
+<div class="chat-widget app-mcp-chat-widget-root"
+     [class.expanded]="isExpanded"
+     role="dialog"
+     aria-label="MCP Assistant Chat Widget"
+     [attr.aria-expanded]="isExpanded">
+
+  <!-- Chat button (collapsed state) - Original Design Preserved -->
   <button
     *ngIf="!isExpanded"
     class="chat-button"
-    (click)="toggleChat()">
-    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="512" height="512" viewBox="0 0 32 32"><path fill="#276578" d="m13.294 7.436.803 2.23a8.84 8.84 0 0 0 5.316 5.316l2.23.803a.229.229 0 0 1 0 .43l-2.23.803a8.84 8.84 0 0 0-5.316 5.316l-.803 2.23a.229.229 0 0 1-.43 0l-.803-2.23a8.84 8.84 0 0 0-5.316-5.316l-2.23-.803a.229.229 0 0 1 0-.43l2.23-.803a8.84 8.84 0 0 0 5.316-5.316l.803-2.23a.228.228 0 0 1 .43 0m10.038-5.359.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129a.116.116 0 0 1 .218 0m0 19.173.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129c.037-.102.182-.102.218 0" data-original="#000000"/></svg>
+    (click)="toggleChat()"
+    aria-label="Ouvrir l'assistant MCP"
+    type="button">
+    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="512" height="512" viewBox="0 0 32 32" aria-hidden="true">
+      <path fill="#276578" d="m13.294 7.436.803 2.23a8.84 8.84 0 0 0 5.316 5.316l2.23.803a.229.229 0 0 1 0 .43l-2.23.803a8.84 8.84 0 0 0-5.316 5.316l-.803 2.23a.229.229 0 0 1-.43 0l-.803-2.23a8.84 8.84 0 0 0-5.316-5.316l-2.23-.803a.229.229 0 0 1 0-.43l2.23-.803a8.84 8.84 0 0 0 5.316-5.316l.803-2.23a.228.228 0 0 1 .43 0m10.038-5.359.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129a.116.116 0 0 1 .218 0m0 19.173.407 1.129a4.48 4.48 0 0 0 2.692 2.692l1.129.407a.116.116 0 0 1 0 .218l-1.129.407a4.48 4.48 0 0 0-2.692 2.692l-.407 1.129a.116.116 0 0 1-.218 0l-.407-1.129a4.48 4.48 0 0 0-2.692-2.692l-1.129-.407a.116.116 0 0 1 0-.218l1.129-.407a4.48 4.48 0 0 0 2.692-2.692l.407-1.129c.037-.102.182-.102.218 0" data-original="#000000"/>
+    </svg>
     <span class="chat-button-text">MCP Assistant</span>
   </button>
 
   <!-- Chat container (expanded state) -->
-  <div *ngIf="isExpanded" class="chat-container">
-    <!-- Header -->
-    <div class="chat-header">
-      <!-- Back button when in conversation view -->
-      <button
-        *ngIf="activeTab === 'chat' && showConversation"
-        class="back-button"
-        (click)="showConversationList()">
-        <i class="mdi mdi-arrow-left"></i>
-      </button>
+  <div *ngIf="isExpanded" class="chat-container" role="main">
+    <!-- Professional Header with Improved Structure -->
+    <header class="chat-header" role="banner">
+      <!-- Navigation Controls -->
+      <div class="header-nav">
+        <!-- Back button when in conversation view -->
+        <button
+          *ngIf="activeTab === 'chat' && showConversation"
+          class="back-button"
+          (click)="showConversationList()"
+          aria-label="Retour à la liste des conversations"
+          type="button">
+          <i class="mdi mdi-arrow-left" aria-hidden="true"></i>
+        </button>
+      </div>
 
-      <!-- Title -->
-      <div class="header-title">
+      <!-- Title Section -->
+      <div class="header-title" role="heading" aria-level="1">
         <span *ngIf="activeTab === 'home'">Accueil</span>
         <span *ngIf="activeTab === 'chat' && !showConversation">Conversations</span>
         <span *ngIf="activeTab === 'chat' && showConversation">
@@ -32,125 +46,193 @@
         <span *ngIf="activeTab === 'login'">Connexion MCP</span>
       </div>
 
-      <!-- Knowledge Source Toggle (only show when authenticated and in chat) -->
-      <div *ngIf="isAuthenticated && (activeTab === 'chat' || activeTab === 'home')" class="knowledge-toggle">
-        <div class="toggle-container">
-          <span class="toggle-label" [class.active]="knowledgeMode === 'general'">Global</span>
-          <div class="toggle-switch" (click)="toggleKnowledgeMode()">
-            <div class="toggle-slider" [class.internal]="knowledgeMode === 'internal'"></div>
-          </div>
-          <span class="toggle-label" [class.active]="knowledgeMode === 'internal'">Interne</span>
-        </div>
-      </div>
-
-      <!-- Tabs and close button -->
+      <!-- Header Actions -->
       <div class="header-actions">
-        <div class="header-tabs" >
-          <div
-            class="tab"
-            [class.active]="activeTab === 'home'"
-            (click)="setActiveTab('home')">
-            <i class="mdi mdi-home"></i>
-          </div>
-          <div
-            class="tab"
-            [class.active]="activeTab === 'chat'"
-            (click)="setActiveTab('chat')">
-            <i class="mdi mdi-message-text"></i>
-          </div>
-          <div
-            class="tab"
-            [class.active]="activeTab === 'help'"
-            (click)="setActiveTab('help')">
-            <i class="mdi mdi-information"></i>
+        <!-- Knowledge Source Toggle - Better Positioned -->
+        <div *ngIf="isAuthenticated && (activeTab === 'chat' || activeTab === 'home')"
+             class="knowledge-toggle"
+             role="group"
+             aria-label="Mode de connaissance">
+          <div class="toggle-container">
+            <span class="toggle-label"
+                  [class.active]="knowledgeMode === 'general'"
+                  id="mcp-global-label">Global</span>
+            <button class="toggle-switch"
+                    (click)="toggleKnowledgeMode()"
+                    [attr.aria-pressed]="knowledgeMode === 'internal'"
+                    aria-labelledby="mcp-global-label mcp-internal-label"
+                    type="button">
+              <div class="toggle-slider" [class.internal]="knowledgeMode === 'internal'"></div>
+            </button>
+            <span class="toggle-label"
+                  [class.active]="knowledgeMode === 'internal'"
+                  id="mcp-internal-label">Interne</span>
           </div>
         </div>
-        <button class="close-button" (click)="toggleChat()">
-          <i class="mdi mdi-close"></i>
+
+        <!-- Close button -->
+        <button class="close-button"
+                (click)="toggleChat()"
+                aria-label="Fermer l'assistant MCP"
+                type="button">
+          <i class="mdi mdi-close" aria-hidden="true"></i>
         </button>
       </div>
-    </div>
+    </header>
 
-    <!-- Content -->
-    <div class="chat-content">
+    <!-- Professional Content Section with Improved Structure -->
+    <main class="chat-content" role="main" aria-label="Contenu principal MCP">
       <!-- Login tab -->
-      <div *ngIf="activeTab === 'login'" class="login-tab">
+      <section *ngIf="activeTab === 'login'"
+               class="login-tab"
+               role="tabpanel"
+               aria-labelledby="login-tab-label"
+               id="login-panel">
         <app-mcp-chat-login (loginSuccess)="handleLoginSuccess()"></app-mcp-chat-login>
-      </div>
+      </section>
 
       <!-- Home tab -->
-      <div *ngIf="activeTab === 'home'" class="home-tab">
+      <section *ngIf="activeTab === 'home'"
+               class="home-tab"
+               role="tabpanel"
+               aria-labelledby="home-tab-label"
+               id="home-panel">
         <app-mcp-chat-home
           (askQuestion)="handleAskQuestion($event)"
           (selectArticle)="handleSelectArticle($event)"
           (navigateToHelpTab)="setActiveTab('help')"
           (logout)="handleLogout()">
         </app-mcp-chat-home>
-      </div>
+      </section>
 
       <!-- Chat tab -->
-      <div *ngIf="activeTab === 'chat'" class="chat-tab">
+      <section *ngIf="activeTab === 'chat'"
+               class="chat-tab"
+               role="tabpanel"
+               aria-labelledby="chat-tab-label"
+               id="chat-panel">
         <!-- Conversation list -->
-        <div *ngIf="!showConversation" class="conversation-list-container">
-          <button class="new-chat-btn" (click)="startNewConversation()">
-            <i class="mdi mdi-plus new-icon"></i> Nouvelle Conversation
+        <div *ngIf="!showConversation"
+             class="conversation-list-container"
+             role="region"
+             aria-label="Liste des conversations MCP">
+          <button class="new-chat-btn"
+                  (click)="startNewConversation()"
+                  aria-label="Créer une nouvelle conversation MCP"
+                  type="button">
+            <i class="mdi mdi-plus new-icon" aria-hidden="true"></i>
+            <span>Nouvelle Conversation</span>
           </button>
 
-          <div class="conversation-list">
+          <div class="conversation-list"
+               role="list"
+               aria-label="Conversations MCP disponibles">
             <div
               *ngFor="let conv of conversations"
               class="conversation-item"
               [class.active]="currentConversationId === conv.id"
-              (click)="loadAndShowConversation(conv.id!)">
+              (click)="loadAndShowConversation(conv.id!)"
+              role="listitem"
+              [attr.aria-selected]="currentConversationId === conv.id"
+              tabindex="0"
+              (keydown.enter)="loadAndShowConversation(conv.id!)"
+              (keydown.space)="loadAndShowConversation(conv.id!)">
               <div class="conv-info">
-                <span class="conv-title">{{ conv.title }}</span>
-                <span class="conv-date">{{ formatDate(conv.lastUpdated) }}</span>
+                <span class="conv-title" [attr.aria-label]="'Titre: ' + conv.title">
+                  {{ conv.title }}
+                </span>
+                <span class="conv-date" [attr.aria-label]="'Dernière mise à jour: ' + formatDate(conv.lastUpdated)">
+                  {{ formatDate(conv.lastUpdated) }}
+                </span>
               </div>
-              <button class="delete-btn" (click)="deleteConversation(conv.id!, $event)">
-                <i class="mdi mdi-trash"></i>
+              <button class="delete-btn"
+                      (click)="deleteConversation(conv.id!, $event)"
+                      [attr.aria-label]="'Supprimer la conversation: ' + conv.title"
+                      type="button">
+                <i class="mdi mdi-trash" aria-hidden="true"></i>
               </button>
             </div>
           </div>
         </div>
 
         <!-- Conversation view -->
-        <div *ngIf="showConversation" class="conversation-view">
+        <div *ngIf="showConversation"
+             class="conversation-view"
+             role="region"
+             aria-label="Vue de conversation MCP">
           <app-mcp-chat-conversation
             [messages]="currentMessages"
             [loading]="isLoading"
             (sendMessage)="sendMessage($event)">
           </app-mcp-chat-conversation>
         </div>
-      </div>
+      </section>
 
       <!-- Help tab -->
-      <div *ngIf="activeTab === 'help'" class="help-tab">
+      <section *ngIf="activeTab === 'help'"
+               class="help-tab"
+               role="tabpanel"
+               aria-labelledby="help-tab-label"
+               id="help-panel">
         <app-mcp-chat-help></app-mcp-chat-help>
-      </div>
-    </div>
+      </section>
+    </main>
 
-    <!-- Footer navigation -->
-    <div class="chat-footer">
-      <div class="footer-nav">
-        <div class="nav-item" [class.active]="activeTab === 'home'" (click)="setActiveTab('home')">
-          <i class="mdi mdi-home"></i>
+    <!-- Professional Footer Navigation -->
+    <footer class="chat-footer" role="navigation" aria-label="Navigation principale MCP">
+      <nav class="footer-nav" role="tablist">
+        <button class="nav-item"
+                [class.active]="activeTab === 'home'"
+                (click)="setActiveTab('home')"
+                role="tab"
+                [attr.aria-selected]="activeTab === 'home'"
+                [attr.aria-controls]="'home-panel'"
+                id="home-tab-label"
+                type="button"
+                aria-label="Aller à l'accueil MCP">
+          <i class="mdi mdi-home" aria-hidden="true"></i>
           <span>Accueil</span>
-        </div>
-        <div class="nav-item" [class.active]="activeTab === 'chat'" (click)="setActiveTab('chat')">
-          <i class="mdi mdi-message-text"></i>
+        </button>
+        <button class="nav-item"
+                [class.active]="activeTab === 'chat'"
+                (click)="setActiveTab('chat')"
+                role="tab"
+                [attr.aria-selected]="activeTab === 'chat'"
+                [attr.aria-controls]="'chat-panel'"
+                id="chat-tab-label"
+                type="button"
+                aria-label="Aller aux conversations MCP">
+          <i class="mdi mdi-message-text" aria-hidden="true"></i>
           <span>Messages</span>
-        </div>
-        <div class="nav-item" [class.active]="activeTab === 'help'" (click)="setActiveTab('help')">
-          <i class="mdi mdi-information"></i>
+        </button>
+        <button class="nav-item"
+                [class.active]="activeTab === 'help'"
+                (click)="setActiveTab('help')"
+                role="tab"
+                [attr.aria-selected]="activeTab === 'help'"
+                [attr.aria-controls]="'help-panel'"
+                id="help-tab-label"
+                type="button"
+                aria-label="Aller au centre d'aide MCP">
+          <i class="mdi mdi-information" aria-hidden="true"></i>
           <span>Aide</span>
-        </div>
-      </div>
-    </div>
+        </button>
+      </nav>
+    </footer>
 
-    <!-- Error message -->
-    <div *ngIf="error" class="error-message">
-      {{ error }}
-      <button class="close-error" (click)="error = null">×</button>
+    <!-- Professional Error Message with Toast Style -->
+    <div *ngIf="error"
+         class="error-message"
+         role="alert"
+         aria-live="polite"
+         [attr.aria-label]="'Erreur: ' + error">
+      <span class="error-text">{{ error }}</span>
+      <button class="close-error"
+              (click)="error = null"
+              aria-label="Fermer le message d'erreur"
+              type="button">
+        <i class="mdi mdi-close" aria-hidden="true"></i>
+      </button>
     </div>
   </div>
 </div>
