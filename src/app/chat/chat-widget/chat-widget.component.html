@@ -31,6 +31,17 @@
         <span *ngIf="activeTab === 'help'">Centre d'aide</span>
       </div>
 
+      <!-- Knowledge Source Toggle (only show when authenticated and in chat) -->
+      <div *ngIf="isAuthenticated && (activeTab === 'chat' || activeTab === 'home')" class="knowledge-toggle">
+        <div class="toggle-container">
+          <span class="toggle-label" [class.active]="knowledgeMode === 'general'">Global</span>
+          <div class="toggle-switch" (click)="toggleKnowledgeMode()">
+            <div class="toggle-slider" [class.internal]="knowledgeMode === 'internal'"></div>
+          </div>
+          <span class="toggle-label" [class.active]="knowledgeMode === 'internal'">Interne</span>
+        </div>
+      </div>
+
       <!-- Tabs and close button -->
       <div class="header-actions">
         <div class="header-tabs">

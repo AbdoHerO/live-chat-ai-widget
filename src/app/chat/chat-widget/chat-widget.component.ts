@@ -18,6 +18,8 @@ export class ChatWidgetComponent implements OnInit {
   currentMessages: ChatMessage[] = [];
   isLoading = false;
   threadId: string | null = null;
+  knowledgeMode: 'general' | 'internal' = 'internal'; // Default to internal (RAG) mode
+  isAuthenticated = true; // For Direct OpenAI, always authenticated
 
   constructor(
     private openaiService: OpenaiService,
@@ -25,8 +27,14 @@ export class ChatWidgetComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    // Load knowledge mode preference from localStorage
+    const savedKnowledgeMode = localStorage.getItem('openai_knowledge_mode') as 'general' | 'internal';
+    if (savedKnowledgeMode) {
+      this.knowledgeMode = savedKnowledgeMode;
+    }
+
     this.conversations = await this.messageStorage.getConversations();
-    
+
     if (this.conversations.length === 0) {
       // Create a default conversation if none exists
       const id = await this.messageStorage.createConversation('Nouvelle Conversation');
@@ -52,6 +60,15 @@ export class ChatWidgetComponent implements OnInit {
       // Reset to conversation list when switching to chat tab
       this.showConversation = false;
     }
+  }
+
+  // Toggle between general and internal knowledge modes
+  toggleKnowledgeMode() {
+    this.knowledgeMode = this.knowledgeMode === 'general' ? 'internal' : 'general';
+    console.log('🔄 OpenAI Knowledge mode changed to:', this.knowledgeMode);
+
+    // Save the preference to localStorage
+    localStorage.setItem('openai_knowledge_mode', this.knowledgeMode);
   }
 
 
@@ -144,7 +161,7 @@ export class ChatWidgetComponent implements OnInit {
     content: content,
     timestamp: new Date()
   };
-  
+
   await this.messageStorage.saveMessage(userMessage);
   this.currentMessages = [...this.currentMessages, userMessage];
 
@@ -155,9 +172,15 @@ export class ChatWidgetComponent implements OnInit {
     await this.updateConversationTitle(this.currentConversationId, title);
   }
 
+  // Format the message based on knowledge mode before sending to OpenAI
+  const formattedMessage = this.formatMessageWithKnowledgeMode(content);
+  console.log('🧠 OpenAI: Using knowledge mode:', this.knowledgeMode);
+  console.log('📝 OpenAI: Original message:', content);
+  console.log('🔄 OpenAI: Formatted message:', formattedMessage);
+
   // Appel à l'API avec réutilisation du thread
   this.isLoading = true;
-  this.openaiService.sendMessage(content, this.threadId || undefined).subscribe({
+  this.openaiService.sendMessage(formattedMessage, this.threadId || undefined).subscribe({
     next: async (response) => {
       if (response && response.message) {
         // Stocker l'ID du thread pour la prochaine utilisation
@@ -226,18 +249,45 @@ export class ChatWidgetComponent implements OnInit {
   formatDate(date: Date): string {
     const d = new Date(date);
     const now = new Date();
-    
+
     // If today, show time only
     if (d.toDateString() === now.toDateString()) {
       return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
-    
+
     // If this year, show month and day
     if (d.getFullYear() === now.getFullYear()) {
       return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
     }
-    
+
     // Otherwise show date
     return d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  /**
+   * Format the user message with the selected knowledge mode option
+   * This prepends the option selection to the message in the background
+   */
+  private formatMessageWithKnowledgeMode(originalMessage: string): string {
+    // Check if this is a greeting message (no need to add option for greetings)
+    const greetingPatterns = [
+      /^(bonjour|salut|hello|hi|hey|bonsoir|good morning|good afternoon|good evening)$/i,
+      /^(comment ça va|comment vas-tu|how are you|ça va|how's it going)$/i,
+      /^(merci|thank you|thanks)$/i
+    ];
+
+    const isGreeting = greetingPatterns.some(pattern => pattern.test(originalMessage.trim()));
+
+    if (isGreeting) {
+      // For greetings, send the message as-is without option selection
+      return originalMessage;
+    }
+
+    // For questions, prepend the option selection based on the toggle
+    const optionNumber = this.knowledgeMode === 'internal' ? '1' : '2';
+
+    // Format: "[BACKGROUND_OPTION: X] Original user question"
+    // This tells the assistant which option was selected without showing it to the user
+    return `[OPTION_UTILISATEUR: ${optionNumber}] ${originalMessage}`;
   }
 }
